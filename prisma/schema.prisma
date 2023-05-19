@@ -12,18 +12,19 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
-  username String @unique
+  googleId String?
+  githubId String?
+  username String @unique @default(uuid())
   accountId String?
   password String?
   age Int
   level String?
-  email String @unique
+  email String?
   preferences Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   workouts Workout[]
 
-  @@unique([username, email])   
 }
 
 model Muscles {
