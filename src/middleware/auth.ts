@@ -5,6 +5,7 @@ import Github from 'passport-github2';
 import { prisma } from '../utils/prisma.service';
 import { NextFunction } from 'express';
 import { GithubProfile } from '../utils/Types';
+require('dotenv').config();
 const GoogleStrategy = Google.Strategy;
 const GithubStrategy = Github.Strategy;
 
