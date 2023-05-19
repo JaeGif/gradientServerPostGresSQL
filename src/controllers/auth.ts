@@ -18,3 +18,9 @@ export const auth_google = async (
   res: Response,
   next: NextFunction
 ) => {};
+
+export const auth_github_redirect = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};

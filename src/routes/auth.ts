@@ -12,5 +12,10 @@ router.get(
   }),
   authController.auth_github
 );
+router.get(
+  '/github/redirect',
+  passport.authenticate('github'),
+  authController.auth_github_redirect
+);
 
 export default router;
