@@ -3,11 +3,12 @@ import { Express } from 'express';
 import Google from 'passport-google-oauth20';
 import Github from 'passport-github2';
 import { prisma } from '../utils/prisma.service';
-import { NextFunction } from 'express';
 import { GithubProfile } from '../utils/Types';
-require('dotenv').config();
-const GoogleStrategy = Google.Strategy;
-const GithubStrategy = Github.Strategy;
+import JWT from 'passport-jwt';
+const JwtStrategy = JWT.Strategy;
+const ExtractJwt = JWT.ExtractJwt;
+/* const GoogleStrategy = Google.Strategy;
+ */ const GithubStrategy = Github.Strategy;
 
 export default passport.use(
   new GithubStrategy(
@@ -23,13 +24,14 @@ export default passport.use(
       done: Function
     ) => {
       // find user
-      console.log('here');
-      console.log(profile);
+      console.log('passing');
+
       const user = await prisma.user.findFirst({
         where: {
           githubId: profile.id,
         },
       });
+      console.log(user);
       if (!user) {
         const user = await prisma.user.create({
           data: {
@@ -40,7 +42,8 @@ export default passport.use(
           },
         });
       }
-      done(null, profile);
+      console.log('tokens', accessToken, refreshToken);
+      done(null, user);
 
       /*       const user = prisma.user.findFirst({
         where: { accountId: profile.id, provider: 'github' },
@@ -105,3 +108,23 @@ export default passport.use(
   }
 }
 */
+
+passport.use(
+  new JwtStrategy(
+    {
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      secretOrKey: process.env.SESSION_KEY,
+    },
+    async function (jwt_payload, done) {
+      const user = await prisma.user.findFirst({
+        where: {
+          id: jwt_payload.sub,
+        },
+      });
+      if (user) return done(null, user);
+      else if (!user) {
+        // redirect to register
+      }
+    }
+  )
+);

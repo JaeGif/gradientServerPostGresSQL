@@ -2,16 +2,38 @@ import express from 'express';
 const app = express();
 import path from 'path';
 import bodyParser from 'body-parser';
-
+import cors from 'cors';
 import userRouter from './routes/user';
 import workoutRouter from './routes/workout';
 import exerciseRouter from './routes/exercise';
 import authRouter from './routes/auth';
 import authMiddleware from './middleware/auth';
+import session from 'express-session';
+import passport from 'passport';
+import cookieSession from 'cookie-session';
+
 const authMiddleWareUser = authMiddleware;
+
+app.use(
+  session({
+    secret: process.env.SESSION_KEY_EXPRESS_S!,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {},
+    name: 'session',
+  })
+);
 require('dotenv').config();
 
-import cors from 'cors';
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user: Express.User, done) {
+  done(null, user);
+});
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
