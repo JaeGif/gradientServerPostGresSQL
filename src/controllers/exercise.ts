@@ -15,6 +15,20 @@ export const exercises_get = async (
   }
 };
 
+export const exercise_post = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const exercises = await prisma.exercise.findMany({});
+    res.json({ exercises }).status(200);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(404);
+  }
+};
+
 export const exercise_get = async (
   req: Request,
   res: Response,

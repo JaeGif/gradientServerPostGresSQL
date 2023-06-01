@@ -1,0 +1,55 @@
+{
+  "date": "02/26/23",
+  "name": "full_body",
+  "exercises": {
+    "bench_press": {
+      "units": "kg",
+      "sets": [
+        { "weight": 66.25, "reps": 8, "reps_to_failure": null },
+        { "weight": 68.25, "reps": 7, "reps_to_failure": null },
+        { "weight": 66.25, "reps": 7, "reps_to_failure": 0 }
+      ]
+    },
+    "lateral_shoulder_raise": {
+      "units": "kg",
+      "sets": [
+        { "weight": 4.75, "reps": 8, "reps_to_failure": null },
+        { "weight": 4.75, "reps": 8, "reps_to_failure": null },
+        { "weight": 5.75, "reps": 8, "reps_to_failure": null },
+        { "weight": 5.75, "reps": 8, "reps_to_failure": 2 }
+      ]
+    },
+    "db_incline_press": {
+      "units": "kg",
+      "sets": [
+        { "weight": 26.25, "reps": 8, "reps_to_failure": null },
+        { "weight": 26.25, "reps": 7, "reps_to_failure": null },
+        { "weight": 26.25, "reps": 8, "reps_to_failure": 0 }
+      ]
+    },
+    "deadlift": {
+      "units": "kg",
+      "sets": [
+        { "weight": 81.25, "reps": 8, "reps_to_failure": null },
+        { "weight": 86.25, "reps": 8, "reps_to_failure": null },
+        { "weight": 86.25, "reps": 8, "reps_to_failure": 2 }
+      ]
+    },
+    "calf_raises": {
+      "units": "kg",
+      "sets": [
+        { "weight": 59.25, "reps": 12, "reps_to_failure": null },
+        { "weight": 59.25, "reps": 12, "reps_to_failure": null },
+        { "weight": 59.25, "reps": 12, "reps_to_failure": null }
+      ]
+    },
+    "chest_flye": {
+      "units": "kg",
+      "sets": [
+        { "weight": 14.75, "reps": 8, "reps_to_failure": null },
+        { "weight": 16.25, "reps": 8, "reps_to_failure": 2 },
+        { "weight": 16.25, "reps": 2, "reps_to_failure": 0 }
+      ]
+    }
+  }
+}

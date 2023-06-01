@@ -21,7 +21,27 @@ const userData: Prisma.UserCreateInput[] = [
     },
   },
 ];
+const muscleGroupsData: Prisma.MuscleGroupsCreateInput[] = [
+  {
+    name: 'back',
+  },
+  { name: 'abs' },
+  { name: 'oblique abs' },
+  { name: 'chest' },
+  { name: 'legs' },
+  { name: 'shoulders' },
+  { name: 'biceps' },
+  { name: 'triceps' },
+];
 
+const exerciseData: Prisma.ExerciseCreateInput[] = [
+  { name: 'Chest | Shoulders' },
+  { name: 'Legs | Core' },
+  { name: "Back | Bi's" },
+  { name: "Chest | Tri's" },
+  { name: 'Arms' },
+  { name: 'Back | Shoulders' },
+];
 async function main() {
   console.log(`Start seeding ...`);
   for (const u of userData) {
@@ -29,6 +49,12 @@ async function main() {
       data: u,
     });
     console.log(`Created user with id: ${user.id}`);
+  }
+  for (const m of muscleGroupsData) {
+    const muscleGroup = await prisma.muscleGroups.create({
+      data: m,
+    });
+    console.log(`Created m with id: ${muscleGroup.id}`);
   }
   console.log(`Seeding finished.`);
 }
