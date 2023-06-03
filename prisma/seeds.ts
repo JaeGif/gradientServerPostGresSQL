@@ -39,18 +39,17 @@ const exerciseData: Prisma.ExerciseCreateInput[] = [
     name: 'Bicep Curl',
     reps: 8,
     sets: 4,
-    rtf: 1,
     muscleGroups: {},
   },
 ];
 
 const workoutData: Prisma.WorkoutCreateInput[] = [
-  { name: 'Chest | Shoulders' },
-  { name: 'Legs | Core' },
-  { name: "Back | Bi's" },
-  { name: "Chest | Tri's" },
-  { name: 'Arms' },
-  { name: 'Back | Shoulders' },
+  { name: 'Chest | Shoulders', user: {} },
+  { name: 'Legs | Core', user: {} },
+  { name: "Back | Bi's", user: {} },
+  { name: "Chest | Tri's", user: {} },
+  { name: 'Arms', user: {} },
+  { name: 'Back | Shoulders', user: {} },
 ];
 async function main() {
   console.log(`Start seeding ...`);
