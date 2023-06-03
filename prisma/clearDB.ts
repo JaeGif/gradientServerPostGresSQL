@@ -15,10 +15,6 @@ async function main() {
   await prisma.workout.deleteMany({});
   console.log(`Workouts deleted`);
 
-  console.log(`Start deleting muscles ...`);
-  await prisma.muscles.deleteMany({});
-  console.log(`Muscles deleted`);
-
   console.log(`Start deleting muscleGroups ...`);
   await prisma.muscleGroups.deleteMany({});
   console.log(`muscleGroups deleted`);

@@ -35,6 +35,16 @@ const muscleGroupsData: Prisma.MuscleGroupsCreateInput[] = [
 ];
 
 const exerciseData: Prisma.ExerciseCreateInput[] = [
+  {
+    name: 'Bicep Curl',
+    reps: 8,
+    sets: 4,
+    rtf: 1,
+    muscleGroups: {},
+  },
+];
+
+const workoutData: Prisma.WorkoutCreateInput[] = [
   { name: 'Chest | Shoulders' },
   { name: 'Legs | Core' },
   { name: "Back | Bi's" },
