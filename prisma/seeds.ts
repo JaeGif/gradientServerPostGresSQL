@@ -34,7 +34,7 @@ const muscleGroupsData: Prisma.MuscleGroupsCreateInput[] = [
   { name: 'triceps' },
 ];
 
-const exerciseData: Prisma.ExerciseCreateInput[] = [
+/* const exerciseData: Prisma.ExerciseCreateInput[] = [
   {
     name: 'Decline Press',
     reps: 8,
@@ -59,7 +59,7 @@ const exerciseData: Prisma.ExerciseCreateInput[] = [
     sets: 4,
     muscleGroups: {},
   },
-];
+]; */
 
 const workoutData: Prisma.WorkoutCreateInput[] = [
   { name: 'Chest | Shoulders', user: {} },
@@ -70,7 +70,13 @@ const workoutData: Prisma.WorkoutCreateInput[] = [
   { name: 'Back | Shoulders', user: {} },
 ];
 
-const performedExerciseData: Prisma.PerformedExerciseCreateInput[] = [];
+/* const performedExerciseData: Prisma.PerformedExerciseCreateInput[] = [
+  { reps: 8, sets: 4, rtf: 1, performedWorkout: {} },
+]; */
+
+/* const performedWorkoutData: Prisma.PerformedWorkoutCreateInput[] = [
+  { user: {} },
+]; */
 
 async function main() {
   console.log(`Start seeding ...`);
@@ -86,18 +92,30 @@ async function main() {
     });
     console.log(`Created m with id: ${muscleGroup.id}`);
   }
-  for (const e of exerciseData) {
+  /*   for (const e of exerciseData) {
     const exercise = await prisma.exercise.create({
       data: e,
     });
     console.log(`Created e with id: ${exercise.id}`);
-  }
+  } */
   for (const w of workoutData) {
     const workout = await prisma.workout.create({
       data: w,
     });
     console.log(`Created w with id: ${workout.id}`);
   }
+  /*   for (const pe of performedExerciseData) {
+    const performedExercise = await prisma.performedExercise.create({
+      data: pe,
+    });
+    console.log(`Created pe with id: ${performedExercise.id}`);
+  } */
+  /*   for (const pw of performedWorkoutData) {
+    const performedWorkout = await prisma.performedWorkout.create({
+      data: pw,
+    });
+    console.log(`Created pw with id: ${performedWorkout.id}`);
+  } */
   console.log(`Seeding finished.`);
 }
 

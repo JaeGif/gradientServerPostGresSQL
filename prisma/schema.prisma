@@ -37,8 +37,8 @@ model Exercise {
   id                String             @id @default(uuid())
   name              String
   workout           Workout[]
-  performedExercise PerformedExercise?
-  muscleGroups      MuscleGroups?      @relation(fields: [muscleGroupsId], references: [id])
+  performedExercise PerformedExercise? 
+  muscleGroups      MuscleGroups      @relation(fields: [muscleGroupsId], references: [id])
   muscleGroupsId    String
   reps              Int
   sets              Int
@@ -56,10 +56,9 @@ model Workout {
 // Performed exercises are unique for every single performed workout
 model PerformedExercise {
   id                 String           @id @default(uuid())
-  exerciseId         String           @unique
+  exerciseId         String            @unique
   exercise           Exercise?        @relation(fields: [exerciseId], references: [id])
-  performedWorkoutId String
-  performedWorkout   PerformedWorkout @relation(fields: [performedWorkoutId], references: [id])
+  performedWorkout   PerformedWorkout[]
   reps               Int
   sets               Int
   rtf                Int?
