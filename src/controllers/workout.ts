@@ -7,8 +7,16 @@ export const workouts_get = async (
   next: NextFunction
 ) => {
   try {
-    const workouts = await prisma.workout.findMany({});
-    res.json({ workouts }).status(200);
+    const workouts = await prisma.workout.findMany({
+      where: {
+        userId: req.query.userid as string,
+      },
+      include: {
+        exercises: true,
+      },
+    });
+    console.log(workouts);
+    return res.json({ workouts }).status(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
