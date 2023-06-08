@@ -6,6 +6,8 @@ import cors from 'cors';
 import userRouter from './routes/user';
 import workoutRouter from './routes/workout';
 import exerciseRouter from './routes/exercise';
+import performedExerciseRouter from './routes/performedExercise';
+
 import authRouter from './routes/auth';
 import authMiddleware from './middleware/auth';
 import session from 'express-session';
@@ -43,6 +45,7 @@ app.use('/auth', authRouter);
 app.use('/api', userRouter);
 app.use('/api', workoutRouter);
 app.use('/api', exerciseRouter);
+app.use('/api', performedExerciseRouter);
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`listening on port ${process.env.PORT}`);

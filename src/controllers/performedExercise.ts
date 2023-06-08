@@ -47,7 +47,7 @@ export const performed_exercise_get = async (
 ) => {
   // get a single performed exercise
   try {
-    const performedExercise = await prisma.performedExercise.findFirst({
+    const performedExercise = await prisma.performedExercise.findUnique({
       where: { id: req.params.id },
     });
     res.json({ performedExercise }).status(200);

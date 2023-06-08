@@ -18,3 +18,5 @@ router.post(
   '/performedExercises/:id',
   performedExerciseController.performed_exercises_post
 );
+
+export default router;
