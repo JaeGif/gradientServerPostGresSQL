@@ -20,6 +20,7 @@ export const exercise_post = async (
   res: Response,
   next: NextFunction
 ) => {
+  // Make a new exercise for the exercise library
   try {
     const exercises = await prisma.exercise.findMany({});
     res.json({ exercises }).status(200);
