@@ -20,20 +20,25 @@ export const performed_exercises_post = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { workout, exercise, reps, sets, rtf } = JSON.parse(req.body);
+  console.log('body', req.body);
 
+  const { workout, exercise, reps, sets, rtf } = req.body;
+  console.log(workout, exercise, reps, sets, rtf);
   try {
     // Post a new exercise, connect to a workout IF the user selected a workout from the list.
     // It does not HAVE to be connected to a workout.
-    const performedExercise = prisma.performedExercise.create({
+
+    const performedExercise = await prisma.performedExercise.create({
       data: {
         reps: reps,
         sets: sets,
         rtf: rtf,
-        exercise: { connect: exercise },
-        performedWorkout: { connect: workout },
+        exercise: { connect: { id: exercise } },
+        performedWorkout: { connect: workout || undefined },
       },
     });
+    console.log(performedExercise);
+    res.json({ performedExercise }).status(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);

@@ -15,7 +15,6 @@ export const workouts_get = async (
         exercises: true,
       },
     });
-    console.log(workouts);
     return res.json({ workouts }).status(200);
   } catch (error) {
     console.error(error);
