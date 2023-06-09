@@ -22,8 +22,7 @@ export const performed_exercises_post = async (
 ) => {
   console.log('body', req.body);
 
-  const { workout, exercise, reps, sets, rtf } = req.body;
-  console.log(workout, exercise, reps, sets, rtf);
+  const { performedWorkout, exercise, reps, sets, rtf } = req.body;
   try {
     // Post a new exercise, connect to a workout IF the user selected a workout from the list.
     // It does not HAVE to be connected to a workout.
@@ -34,7 +33,7 @@ export const performed_exercises_post = async (
         sets: sets,
         rtf: rtf,
         exercise: { connect: { id: exercise } },
-        performedWorkout: { connect: workout || undefined },
+        performedWorkout: { connect: { id: performedWorkout } },
       },
     });
     console.log(performedExercise);
