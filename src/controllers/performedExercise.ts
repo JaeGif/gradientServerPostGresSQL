@@ -7,12 +7,12 @@ export const performed_exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    const { exercise, user } = req.params;
+    const { exercise, user } = req.query;
 
     const performedExercises = await prisma.performedExercise.findMany({
       where: {
-        exerciseId: exercise,
-        userId: user,
+        exerciseId: exercise as string,
+        userId: user as string,
       },
     });
     res.json({ performedExercises }).status(200);
@@ -27,8 +27,6 @@ export const performed_exercises_post = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('body', req.body);
-
   const { performedWorkout, exercise, reps, sets, rtf } = req.body;
   try {
     // Post a new exercise, connect to a workout IF the user selected a workout from the list.
