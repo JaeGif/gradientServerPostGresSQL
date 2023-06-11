@@ -61,11 +61,14 @@ model PerformedExercise {
   exerciseId       String?            @unique
   exercise         Exercise?          @relation(fields: [exerciseId], references: [id])
   performedWorkout PerformedWorkout[]
-  user             User?               @relation(fields: [userId], references: [id])
-  userId           String?             @unique
+  user             User?              @relation(fields: [userId], references: [id])
+  userId           String?            @unique
+  weight           Float?
+  unit             String?
   reps             Int
   sets             Int
   rtf              Int?
+  date             DateTime?          @default(now())
 }
 
 // Performed workouts are unique for every single workout

@@ -15,6 +15,7 @@ export const performed_exercises_get = async (
         userId: user as string,
       },
     });
+    console.log(performedExercises);
     res.json({ performedExercises }).status(200);
   } catch (error) {
     console.error(error);
