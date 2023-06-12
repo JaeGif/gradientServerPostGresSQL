@@ -14,6 +14,7 @@ export const performed_exercises_get = async (
         exerciseId: exercise as string,
         userId: user as string,
       },
+      include: { exercise: true },
     });
     console.log(performedExercises);
     res.json({ performedExercises }).status(200);

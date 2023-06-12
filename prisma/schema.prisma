@@ -11,21 +11,21 @@ datasource db {
 }
 
 model User {
-  id                String             @id @default(uuid())
+  id                String              @id @default(uuid())
   googleId          String?
   githubId          String?
-  username          String             @unique @default(uuid())
+  username          String              @unique @default(uuid())
   accountId         String?
   password          String?
   age               Int
   level             String?
   email             String?
   preferences       Json?
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
   workouts          Workout[]
   performedWorkouts PerformedWorkout[]
-  performedExercise PerformedExercise?
+  performedExercise PerformedExercise[]
 }
 
 model MuscleGroups {
