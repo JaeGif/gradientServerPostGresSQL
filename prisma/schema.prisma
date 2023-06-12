@@ -62,7 +62,7 @@ model PerformedExercise {
   exercise         Exercise?          @relation(fields: [exerciseId], references: [id])
   performedWorkout PerformedWorkout[]
   user             User?              @relation(fields: [userId], references: [id])
-  userId           String?            @unique
+  userId           String?            
   weight           Float?
   unit             String?
   reps             Int
