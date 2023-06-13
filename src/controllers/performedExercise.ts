@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { prisma } from '../utils/prisma.service'; // current client
+import { Prisma } from '@prisma/client';
 
 export const performed_exercises_get = async (
   req: Request,
@@ -8,18 +9,16 @@ export const performed_exercises_get = async (
 ) => {
   try {
     const { exercise, user } = req.query;
-    const performed2Exercise = await prisma.performedExercise.findMany({
-      where: {
-        exerciseId: exercise as string,
-      },
-    });
-    console.log(performed2Exercise);
+
     const performedExercises = await prisma.performedExercise.findMany({
       where: {
         exerciseId: exercise as string,
         userId: user as string,
       },
       include: { exercise: true },
+      orderBy: {
+        date: 'asc',
+      },
     });
     console.log(performedExercises);
     res.json({ performedExercises }).status(200);
