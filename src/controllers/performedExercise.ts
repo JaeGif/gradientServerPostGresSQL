@@ -11,13 +11,13 @@ export const performed_exercises_get = async (
 ) => {
   try {
     const { exercise, user } = req.query;
-
+    console.log('get', exercise, 'for', user);
     const performedExercises = await prisma.performedExercise.findMany({
       where: {
         exerciseId: exercise as string,
         userId: user as string,
       },
-      include: { exercise: true },
+      include: { exercise: true, performedWorkout: true, sets: true },
       orderBy: {
         date: 'asc',
       },

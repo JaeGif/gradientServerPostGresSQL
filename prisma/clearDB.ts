@@ -3,7 +3,7 @@ import { PrismaClient, Prisma } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log(`Start deleting users ...`);
+  /*   console.log(`Start deleting users ...`);
   await prisma.user.deleteMany({});
   console.log(`Users deleted`);
 
@@ -17,15 +17,15 @@ async function main() {
 
   console.log(`Start deleting muscleGroups ...`);
   await prisma.muscleGroups.deleteMany({});
-  console.log(`muscleGroups deleted`);
+  console.log(`muscleGroups deleted`); */
 
   console.log(`Start deleting performedExercises ...`);
   await prisma.performedExercise.deleteMany({});
   console.log(`performedExercises deleted`);
 
-  console.log(`Start deleting performedWorkout ...`);
+  /*   console.log(`Start deleting performedWorkout ...`);
   await prisma.performedWorkout.deleteMany({});
-  console.log(`performedWorkout deleted`);
+  console.log(`performedWorkout deleted`); */
 
   console.log(`DB clear finished.`);
 }
