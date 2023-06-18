@@ -25,6 +25,12 @@ export type Workout = {
   name: string;
 };
 
+export type PerformedSets = {
+  index: number;
+  weight: number;
+  reps: number;
+  rtf?: number;
+};
 // Auth service types
 
 export interface GithubProfile {

@@ -1,6 +1,8 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { prisma } from '../utils/prisma.service'; // current client
 import { Prisma } from '@prisma/client';
+import { PerformedSets } from '../utils/Types';
+import { create } from 'domain';
 
 export const performed_exercises_get = async (
   req: Request,
@@ -33,20 +35,21 @@ export const performed_exercises_post = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { performedWorkout, exercise, reps, sets, weight, unit, rtf, user } =
-    req.body;
+  const { performedWorkout, exercise, sets, user } = req.body;
   try {
     // Post a new exercise, connect to a workout IF the user selected a workout from the list.
     // It does not HAVE to be connected to a workout.
     console.log('enter');
-    console.log('exercise', exercise);
+
+    console.log(req.body);
+
     const performedExercise = await prisma.performedExercise.create({
       data: {
-        reps: reps,
-        sets: sets,
-        rtf: rtf,
-        weight: weight,
-        unit: unit,
+        sets: {
+          createMany: {
+            data: sets as PerformedSets,
+          },
+        },
         exercise: { connect: { id: exercise } },
         performedWorkout: { connect: { id: performedWorkout } },
         user: { connect: { id: user } },

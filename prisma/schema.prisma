@@ -47,36 +47,43 @@ model Exercise {
 
 // Workout model is a reference for exercises a user Could perform
 model Workout {
-  id               String            @id @default(uuid())
+  id               String             @id @default(uuid())
   name             String
   performedWorkout PerformedWorkout[]
   exercises        Exercise[]
-  user             User?             @relation(fields: [userId], references: [id])
+  user             User?              @relation(fields: [userId], references: [id])
   userId           String?
 }
 
 // Performed exercises are unique for every single performed workout
 model PerformedExercise {
-  id               String             @id @default(uuid())
-  exerciseId       String?            
-  exercise         Exercise?          @relation(fields: [exerciseId], references: [id])
-  performedWorkout PerformedWorkout[]
-  user             User?              @relation(fields: [userId], references: [id])
-  userId           String?
-  weight           Float?
-  unit             String?
-  reps             Int
-  sets             Int
-  rtf              Int?
-  date             DateTime?          @default(now())
+  id                 String           @id @default(uuid())
+  exerciseId         String?
+  exercise           Exercise?        @relation(fields: [exerciseId], references: [id])
+  performedWorkoutId String?
+  performedWorkout   PerformedWorkout? @relation(fields: [performedWorkoutId], references: [id])
+  user               User?            @relation(fields: [userId], references: [id])
+  userId             String?
+  sets               PerformedSet[]
+  date               DateTime?        @default(now())
+}
+
+model PerformedSet {
+  id                  String             @id @default(uuid())
+  performedExerciseId String?
+  performedExercise   PerformedExercise? @relation(fields: [performedExerciseId], references: [id])
+  index               Int // index tells you what order the set was performed in the workout
+  reps                Int
+  weight              Float
+  unit                String?
+  rtf                 Int?
 }
 
 // Performed workouts are unique for every single workout
-// Performed Workout contains the exercises actually performed, with sets and reps
 model PerformedWorkout {
   id                 String              @id @default(uuid())
   workout            Workout?            @relation(fields: [workoutId], references: [id])
-  workoutId          String?             
+  workoutId          String?
   performedExercises PerformedExercise[]
   date               DateTime            @default(now())
   user               User                @relation(fields: [userId], references: [id])
