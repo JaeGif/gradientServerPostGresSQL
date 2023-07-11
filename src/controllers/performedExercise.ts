@@ -10,20 +10,33 @@ export const performed_exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    const { exercise, user } = req.query;
-    console.log('get', exercise, 'for', user);
-    const performedExercises = await prisma.performedExercise.findMany({
-      where: {
-        exerciseId: exercise as string,
-        userId: user as string,
-      },
-      include: { exercise: true, performedWorkout: true, sets: true },
-      orderBy: {
-        date: 'asc',
-      },
-    });
-    console.log(performedExercises);
-    res.json({ performedExercises }).status(200);
+    const { exercise, user, standardized } = req.query;
+    if (standardized) {
+      const performedExercises = await prisma.performedExercise.findMany({
+        where: {
+          exerciseId: exercise as string,
+          userId: user as string,
+          exercise: { standardized: true },
+        },
+        include: { exercise: true, performedWorkout: true, sets: true },
+        orderBy: {
+          date: 'asc',
+        },
+      });
+      res.json({ performedExercises }).status(200);
+    } else {
+      const performedExercises = await prisma.performedExercise.findMany({
+        where: {
+          exerciseId: exercise as string,
+          userId: user as string,
+        },
+        include: { exercise: true, performedWorkout: true, sets: true },
+        orderBy: {
+          date: 'asc',
+        },
+      });
+      res.json({ performedExercises }).status(200);
+    }
   } catch (error) {
     console.error(error);
     res.sendStatus(404);

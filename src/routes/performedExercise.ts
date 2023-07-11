@@ -6,10 +6,12 @@ router.get(
   '/performedExercises',
   performedExerciseController.performed_exercises_get
 );
+
 router.get(
   '/performedExercises/:id',
   performedExerciseController.performed_exercise_get
 );
+
 router.post(
   '/performedExercises',
   performedExerciseController.performed_exercises_post

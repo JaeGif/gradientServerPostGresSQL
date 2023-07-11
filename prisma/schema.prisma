@@ -44,6 +44,7 @@ model Exercise {
   muscleGroupsId    String
   reps              Int
   sets              Int
+  standardized      Boolean
 }
 
 // Workout model is a reference for exercises a user Could perform
