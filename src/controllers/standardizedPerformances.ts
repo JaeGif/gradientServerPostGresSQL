@@ -10,7 +10,7 @@ export const standardized_exercise_get = async (
 ) => {
   try {
     const { user, count } = req.query;
-    console.log('entering');
+    console.log('begin');
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
       squats: '5850e575-4f8d-4723-bb1f-6807fbab1458',
@@ -89,15 +89,13 @@ export const standardized_exercise_get = async (
       take: parseInt(count as string),
     });
 
-    const averagedDataset = averageMultipleDatasets([
+    const average = averageMultipleDatasets([
       calculate1RepMax(recentBenchPressPerformances, true),
       calculate1RepMax(recentSquatsPerformances, true),
       calculate1RepMax(recentDeadliftsPerformances, true),
       calculate1RepMax(recentPullupsPerformances, true),
     ]);
-
-    console.log('avgd', averagedDataset);
-    res.sendStatus(200);
+    return average ? res.json({ average }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);

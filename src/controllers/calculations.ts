@@ -5,7 +5,6 @@ export const averageMultipleDatasets = (data: number[][]) => {
   let runningAvg = 0;
   let elementTotal = 0;
   let emptyArrCount = 0;
-  console.log(data);
   for (let i = 0; i < data.length; i++) {
     if (data[i].length === 0) {
       emptyArrCount++;
