@@ -7,6 +7,7 @@ import userRouter from './routes/user';
 import workoutRouter from './routes/workout';
 import exerciseRouter from './routes/exercise';
 import performedExerciseRouter from './routes/performedExercise';
+import standardizedPerformanceRouter from './routes/standardizedPerformances';
 
 import authRouter from './routes/auth';
 import authMiddleware from './middleware/auth';
@@ -46,6 +47,7 @@ app.use('/api', userRouter);
 app.use('/api', workoutRouter);
 app.use('/api', exerciseRouter);
 app.use('/api', performedExerciseRouter);
+app.use('/api', standardizedPerformanceRouter);
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`listening on port ${process.env.PORT}`);

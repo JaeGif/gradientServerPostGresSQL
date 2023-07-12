@@ -1,8 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { prisma } from '../utils/prisma.service'; // current client
-import { Prisma } from '@prisma/client';
 import { PerformedSets } from '../utils/Types';
-import { create } from 'domain';
 
 export const performed_exercises_get = async (
   req: Request,
@@ -14,7 +12,6 @@ export const performed_exercises_get = async (
     if (standardized) {
       const performedExercises = await prisma.performedExercise.findMany({
         where: {
-          exerciseId: exercise as string,
           userId: user as string,
           exercise: { standardized: true },
         },
@@ -23,6 +20,7 @@ export const performed_exercises_get = async (
           date: 'asc',
         },
       });
+      console.log(performedExercises);
       res.json({ performedExercises }).status(200);
     } else {
       const performedExercises = await prisma.performedExercise.findMany({
@@ -35,6 +33,7 @@ export const performed_exercises_get = async (
           date: 'asc',
         },
       });
+
       res.json({ performedExercises }).status(200);
     }
   } catch (error) {
