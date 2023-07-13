@@ -35,6 +35,7 @@ export default passport.use(
       if (!user) {
         const user = await prisma.user.create({
           data: {
+            gender: 'm',
             githubId: profile.id,
             email: profile._json.email,
             username: profile.username,

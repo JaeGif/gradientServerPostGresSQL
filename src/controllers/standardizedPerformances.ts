@@ -94,7 +94,6 @@ export const standardized_exercise_get = async (
       take: parseInt(count as string),
     });
 
-    console.log(recentBenchPressPerformances[0].sets);
     const average = averageMultipleDatasets([
       calculate1RepMax(recentBenchPressPerformances, true),
       calculate1RepMax(recentSquatsPerformances, true),
@@ -113,7 +112,7 @@ export const standardized_exercise_get = async (
       units as 'kg' | 'lb'
     );
 
-    return average
+    return average && averagedStandards
       ? res.json({ average, averagedStandards }).status(200)
       : res.sendStatus(404);
   } catch (error) {
