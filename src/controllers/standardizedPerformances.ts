@@ -14,7 +14,7 @@ export const standardized_exercise_get = async (
   next: NextFunction
 ) => {
   try {
-    const { user, count, userGender } = req.query;
+    const { user, count, userGender, units } = req.query;
     console.log('begin');
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
@@ -94,6 +94,7 @@ export const standardized_exercise_get = async (
       take: parseInt(count as string),
     });
 
+    console.log(recentBenchPressPerformances[0].sets);
     const average = averageMultipleDatasets([
       calculate1RepMax(recentBenchPressPerformances, true),
       calculate1RepMax(recentSquatsPerformances, true),
@@ -108,7 +109,8 @@ export const standardized_exercise_get = async (
         recentPullupsPerformances,
         recentSquatsPerformances,
       ]),
-      userGender as string
+      userGender as 'm' | 'f',
+      units as 'kg' | 'lb'
     );
 
     return average

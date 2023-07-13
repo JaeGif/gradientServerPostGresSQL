@@ -23,7 +23,7 @@ export const averageMultipleDatasets = (data: number[][]) => {
 };
 
 export const calculate1RepMax = (data: any[], average: boolean) => {
-  // unit agnostic
+  // unit agnostic, units that go in, are units that go out
   // use average 1RM averaging the sets in each exercise
 
   let estimatedORMArray;
@@ -60,7 +60,8 @@ export const calculate1RepMax = (data: any[], average: boolean) => {
 
 export const calculateStandardAvg = (
   exerciseIdx: string[] | [],
-  userGender: string
+  userGender: 'm' | 'f',
+  units: 'kg' | 'lb' = 'kg'
 ) => {
   const genderStandards = standards.gender[userGender];
 
@@ -73,11 +74,11 @@ export const calculateStandardAvg = (
   for (let i = 0; i < exerciseIdx.length; i++) {
     for (let j = 0; j < genderStandards.length; j++) {
       if (exerciseIdx[i] === genderStandards[j].exerciseId) {
-        beginner += genderStandards[j].level.beginner.weight.kg;
-        novice += genderStandards[j].level.novice.weight.kg;
-        intermediate += genderStandards[j].level.intermediate.weight.kg;
-        advanced += genderStandards[j].level.advanced.weight.kg;
-        elite += genderStandards[j].level.elite.weight.kg;
+        beginner += genderStandards[j].level.beginner.weight[units];
+        novice += genderStandards[j].level.novice.weight[units];
+        intermediate += genderStandards[j].level.intermediate.weight[units];
+        advanced += genderStandards[j].level.advanced.weight[units];
+        elite += genderStandards[j].level.elite.weight[units];
       }
     }
   }
@@ -93,6 +94,7 @@ export const calculateStandardAvg = (
     intermediate: intermediate,
     advanced: advanced,
     elite: elite,
+    units: units,
   };
 };
 
@@ -105,4 +107,11 @@ export const addExerciseIdx = (arr: PerformedExercise[][]) => {
     }
   }
   return result;
+};
+
+export const kgToLb = (kg: number) => {
+  return parseFloat((kg * 2.20462).toFixed(2));
+};
+export const lbToKg = (lb: number) => {
+  return parseFloat((lb / 2.20462).toFixed(2));
 };
