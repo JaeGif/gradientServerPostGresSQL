@@ -1,6 +1,6 @@
 import { PerformedExercise } from '@prisma/client';
-import { PerformedSets } from '../utils/Types';
-
+import { standards } from '../db/standards';
+import { Exercise, Workout, PerformedSets } from '../utils/Types';
 export const averageMultipleDatasets = (data: number[][]) => {
   let runningAvg = 0;
   let elementTotal = 0;
@@ -56,4 +56,53 @@ export const calculate1RepMax = (data: any[], average: boolean) => {
   }
   if (!estimatedORMArray) return [];
   return estimatedORMArray;
+};
+
+export const calculateStandardAvg = (
+  exerciseIdx: string[] | [],
+  userGender: string
+) => {
+  const genderStandards = standards.gender[userGender];
+
+  if (exerciseIdx.length === 0) return undefined;
+  let beginner = 0;
+  let novice = 0;
+  let intermediate = 0;
+  let advanced = 0;
+  let elite = 0;
+  for (let i = 0; i < exerciseIdx.length; i++) {
+    for (let j = 0; j < genderStandards.length; j++) {
+      if (exerciseIdx[i] === genderStandards[j].exerciseId) {
+        beginner += genderStandards[j].level.beginner.weight.kg;
+        novice += genderStandards[j].level.novice.weight.kg;
+        intermediate += genderStandards[j].level.intermediate.weight.kg;
+        advanced += genderStandards[j].level.advanced.weight.kg;
+        elite += genderStandards[j].level.elite.weight.kg;
+      }
+    }
+  }
+  beginner = parseFloat((beginner / exerciseIdx.length).toFixed(2));
+  novice = parseFloat((novice / exerciseIdx.length).toFixed(2));
+  intermediate = parseFloat((intermediate / exerciseIdx.length).toFixed(2));
+  advanced = parseFloat((advanced / exerciseIdx.length).toFixed(2));
+  elite = parseFloat((elite / exerciseIdx.length).toFixed(2));
+
+  return {
+    beginner: beginner,
+    novice: novice,
+    intermediate: intermediate,
+    advanced: advanced,
+    elite: elite,
+  };
+};
+
+export const addExerciseIdx = (arr: PerformedExercise[][]) => {
+  let result = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].length !== 0) {
+      // these exercises WILL exist
+      result.push(arr[i][0].exerciseId!);
+    }
+  }
+  return result;
 };

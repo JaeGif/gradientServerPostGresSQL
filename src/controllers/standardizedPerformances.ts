@@ -1,7 +1,12 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { prisma } from '../utils/prisma.service'; // current client
 import { PerformedSets } from '../utils/Types';
-import { averageMultipleDatasets, calculate1RepMax } from './calculations';
+import {
+  addExerciseIdx,
+  averageMultipleDatasets,
+  calculate1RepMax,
+  calculateStandardAvg,
+} from './calculations';
 
 export const standardized_exercise_get = async (
   req: Request,
@@ -9,7 +14,7 @@ export const standardized_exercise_get = async (
   next: NextFunction
 ) => {
   try {
-    const { user, count } = req.query;
+    const { user, count, userGender } = req.query;
     console.log('begin');
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
@@ -95,7 +100,20 @@ export const standardized_exercise_get = async (
       calculate1RepMax(recentDeadliftsPerformances, true),
       calculate1RepMax(recentPullupsPerformances, true),
     ]);
-    return average ? res.json({ average }).status(200) : res.sendStatus(404);
+
+    const averagedStandards = calculateStandardAvg(
+      addExerciseIdx([
+        recentBenchPressPerformances,
+        recentDeadliftsPerformances,
+        recentPullupsPerformances,
+        recentSquatsPerformances,
+      ]),
+      userGender as string
+    );
+
+    return average
+      ? res.json({ average, averagedStandards }).status(200)
+      : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
