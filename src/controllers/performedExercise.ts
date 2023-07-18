@@ -20,7 +20,6 @@ export const performed_exercises_get = async (
           date: 'asc',
         },
       });
-      console.log(performedExercises);
       res.json({ performedExercises }).status(200);
     } else {
       const performedExercises = await prisma.performedExercise.findMany({
