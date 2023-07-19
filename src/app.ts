@@ -28,6 +28,14 @@ app.use(
 );
 require('dotenv').config();
 
+/* app.use(auth.initialize());
+passport.use(new localStrategy(function (user, done) {
+  done(null, user)
+
+}));
+User.authenticate()
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser()); */
 app.use(passport.initialize());
 app.use(passport.session());
 passport.serializeUser(function (user, done) {

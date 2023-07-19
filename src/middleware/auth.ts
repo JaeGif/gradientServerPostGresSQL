@@ -1,5 +1,4 @@
 import passport from 'passport';
-import { Express } from 'express';
 import Google from 'passport-google-oauth20';
 import Github from 'passport-github2';
 import { prisma } from '../utils/prisma.service';
@@ -37,7 +36,9 @@ export default passport.use(
           data: {
             gender: 'm',
             githubId: profile.id,
-            email: profile._json.email,
+            preferences: { unit: 'kg', standard: 'percentile' },
+            weight: { value: 83, unit: 'kg' },
+            email: profile._json.email!,
             username: profile.username,
             age: 20,
           },
@@ -110,7 +111,7 @@ export default passport.use(
 }
 */
 
-passport.use(
+export const jwt_strategy = passport.use(
   new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -128,4 +129,106 @@ passport.use(
       }
     }
   )
+);
+
+require('dotenv').config();
+const params = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.SESSION_KEY,
+};
+
+export const local_strategy = function () {
+  const strategy = new JWT.Strategy(params, async function (payload, done) {
+    console.log(payload);
+    const user = await prisma.user.findFirst({
+      where: {
+        id: payload.id,
+      },
+    });
+    if (user) return done(null, user);
+    else if (!user) {
+      return console.log('not found');
+    }
+  });
+  passport.use(strategy);
+  return {
+    initialize: function () {
+      return passport.initialize();
+    },
+    authenticate: function () {
+      return passport.authenticate('jwt', { session: false });
+    },
+  };
+};
+
+import { IStrategyOptionsWithRequest, Strategy } from 'passport-local';
+import { hash, compare } from '../utils/authUtils';
+const options: IStrategyOptionsWithRequest = {
+  usernameField: 'username',
+  passwordField: 'password',
+  passReqToCallback: true,
+};
+
+// Passport middleware to signup users
+passport.use(
+  'signup',
+  new Strategy(options, async (req, email, password, cb) => {
+    try {
+      // Check if user found
+      console.log('pass Signup', email, password);
+      const existsEmail = await prisma.user.findFirst({ where: { email } });
+      if (existsEmail)
+        return cb(null, false, {
+          message: 'Email already exists.',
+        });
+      // Create the user
+      else {
+        const { gender, preferences, username, age, weight } = req.body;
+
+        const user = await prisma.user.create({
+          data: {
+            gender: gender,
+            preferences: {
+              unit: preferences.unit,
+              standard: preferences.standard,
+            },
+            weight: { value: weight.value, unit: weight.unit },
+            email: email,
+            username: username,
+            age: age,
+            password: await hash(password),
+          },
+        });
+        return cb(null, user);
+      }
+    } catch (err) {
+      console.error(err);
+      return cb(null, undefined);
+    }
+  })
+); // Passport middleware to login users
+passport.use(
+  'login',
+  new Strategy(options, async (req, email, password, cb) => {
+    try {
+      // Check if user found
+      const user = await prisma.user.findFirst({ where: { email } });
+      if (!user)
+        return cb(null, false, {
+          message: 'No user found.',
+        });
+      // Compare password
+      // if you make password required, this will be good
+      const validPassword = await compare(password, user.password!);
+
+      if (!validPassword)
+        return cb(null, false, {
+          message: 'Invalid credentials.',
+        });
+      return cb(null, user);
+    } catch (err) {
+      console.error(err);
+      return cb(null, undefined);
+    }
+  })
 );
