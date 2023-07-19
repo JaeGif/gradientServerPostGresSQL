@@ -164,7 +164,7 @@ export const local_strategy = function () {
 import { IStrategyOptionsWithRequest, Strategy } from 'passport-local';
 import { hash, compare } from '../utils/authUtils';
 const options: IStrategyOptionsWithRequest = {
-  usernameField: 'username',
+  usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: true,
 };
@@ -175,7 +175,7 @@ passport.use(
   new Strategy(options, async (req, email, password, cb) => {
     try {
       // Check if user found
-      console.log('pass Signup', email, password);
+      console.log(email, password);
       const existsEmail = await prisma.user.findFirst({ where: { email } });
       if (existsEmail)
         return cb(null, false, {
@@ -184,7 +184,6 @@ passport.use(
       // Create the user
       else {
         const { gender, preferences, username, age, weight } = req.body;
-
         const user = await prisma.user.create({
           data: {
             gender: gender,
@@ -212,6 +211,7 @@ passport.use(
   new Strategy(options, async (req, email, password, cb) => {
     try {
       // Check if user found
+      console.log('login', email, password);
       const user = await prisma.user.findFirst({ where: { email } });
       if (!user)
         return cb(null, false, {
@@ -220,11 +220,13 @@ passport.use(
       // Compare password
       // if you make password required, this will be good
       const validPassword = await compare(password, user.password!);
-
-      if (!validPassword)
+      console.log(validPassword);
+      if (!validPassword) {
+        console.log('fail');
         return cb(null, false, {
           message: 'Invalid credentials.',
         });
+      }
       return cb(null, user);
     } catch (err) {
       console.error(err);

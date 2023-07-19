@@ -8,16 +8,31 @@ export const auth_local = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('querying', req);
-  return res.sendStatus(200);
+  console.log('querying');
+  passport.authenticate(
+    'login',
+    { session: false },
+    (err: string, user: User) => {
+      // Check for errors
+      if (err) throw new Error(err); // Generate token
+      const token = generateToken(user.id);
+      return res.status(201).json({
+        status: 'success',
+        data: {
+          message: 'Welcome back.',
+          user,
+          token,
+        },
+        statusCode: res.statusCode,
+      });
+    }
+  )(req, res, next);
 };
 export const auth_register = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log('registering');
-  console.log(req.body);
   passport.authenticate(
     'signup',
     { session: false },
@@ -25,7 +40,6 @@ export const auth_register = async (
       // Check for errors
       if (err) throw new Error(err); // Generate token
       const token = generateToken(user.id);
-      console.log(user);
       return res.status(201).json({
         status: 'success',
         data: {

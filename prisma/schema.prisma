@@ -14,12 +14,12 @@ model User {
   id                String              @id @default(uuid())
   googleId          String?
   githubId          String?
-  username          String              @unique @default(uuid())
+  username          String              @default(uuid())
   accountId         String?
   password          String?
   age               Int?
   weight            Json              
-  email             String
+  email             String              @unique
   preferences       Json
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
