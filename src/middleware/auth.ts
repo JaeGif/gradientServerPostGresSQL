@@ -183,7 +183,9 @@ passport.use(
         });
       // Create the user
       else {
-        const { gender, preferences, username, age, weight } = req.body;
+        const { gender, preferences, username, age, weight } = JSON.parse(
+          req.body
+        );
         const user = await prisma.user.create({
           data: {
             gender: gender,
