@@ -16,7 +16,7 @@ model User {
   githubId          String?
   username          String              @default(uuid())
   accountId         String?
-  password          String?
+  password          String
   age               Int?
   weight            Json              
   email             String              @unique

@@ -211,7 +211,6 @@ passport.use(
   new Strategy(options, async (req, email, password, cb) => {
     try {
       // Check if user found
-      console.log('login', email, password);
       const user = await prisma.user.findFirst({ where: { email } });
       if (!user)
         return cb(null, false, {
@@ -220,9 +219,7 @@ passport.use(
       // Compare password
       // if you make password required, this will be good
       const validPassword = await compare(password, user.password!);
-      console.log(validPassword);
       if (!validPassword) {
-        console.log('fail');
         return cb(null, false, {
           message: 'Invalid credentials.',
         });
