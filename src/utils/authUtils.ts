@@ -19,10 +19,7 @@ export const generateToken = (id: string) => {
   });
 };
 
-const generatePassword = async (password: string) => {
+export const generatePassword = async (password: string) => {
   const hashedPass = await hash(password);
-  console.log(hashedPass);
   return hashedPass;
 };
-
-console.log('password: ', generatePassword('cat0both'));
