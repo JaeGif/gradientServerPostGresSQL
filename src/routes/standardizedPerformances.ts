@@ -5,4 +5,8 @@ router.get(
   '/standardizedPerformances',
   standardizedPerformancesController.standardized_exercise_get
 );
+router.get(
+  '/standardizedPerformancesMax',
+  standardizedPerformancesController.standardized_exercise_maxes_get
+);
 export default router;
