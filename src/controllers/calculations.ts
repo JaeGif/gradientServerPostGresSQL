@@ -22,7 +22,14 @@ export const averageMultipleDatasets = (data: number[][]) => {
   return parseFloat((runningAvg / (data.length - emptyArrCount)).toFixed(2));
 };
 
-export const calculate1RepMax = (data: any[], average: boolean) => {
+export const calculate1RepMax = (
+  data: any[],
+  average: boolean,
+  isPullups: boolean = false,
+  userWeight?: number
+) => {
+  if (isPullups && !userWeight) return [];
+
   // unit agnostic, units that go in, are units that go out
   // use average 1RM averaging the sets in each exercise
 
@@ -33,11 +40,25 @@ export const calculate1RepMax = (data: any[], average: boolean) => {
 
     for (let i = 0; i < sets.length; i++) {
       if (sets[i].reps >= 5) {
-        const brzycki = sets[i].weight * (36 / (37 - sets[i].reps));
-        avgForElementArr.push(brzycki);
+        if (isPullups && userWeight) {
+          const brzycki =
+            (sets[i].weight + userWeight) * (36 / (37 - sets[i].reps)) -
+            userWeight;
+          avgForElementArr.push(brzycki);
+        } else {
+          const brzycki = sets[i].weight * (36 / (37 - sets[i].reps));
+          avgForElementArr.push(brzycki);
+        }
       } else if (sets[i].reps < 5 && sets[i].reps !== 0) {
-        const epley = sets[i].weight * (1 + sets[i].reps / 30);
-        avgForElementArr.push(epley);
+        if (isPullups && userWeight) {
+          const epley =
+            (sets[i].weight + userWeight) * (1 + sets[i].reps / 30) -
+            userWeight;
+          avgForElementArr.push(epley);
+        } else {
+          const epley = sets[i].weight * (1 + sets[i].reps / 30);
+          avgForElementArr.push(epley);
+        }
       } else return 0;
     }
     if (average) return calculateAverageOfArray(avgForElementArr);

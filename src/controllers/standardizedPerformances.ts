@@ -17,19 +17,12 @@ export const standardized_exercise_get = async (
     const { user, count, userGender, units } = req.query;
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
-      squats: '5850e575-4f8d-4723-bb1f-6807fbab1458',
-      deadlifts: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
       pullups: '6a10f694-25bd-4824-b2a2-bfb21b4167c4',
+      deadlifts: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
+      squats: '5850e575-4f8d-4723-bb1f-6807fbab1458',
       shoulderPress: 'a00e222e-b2b4-4447-9274-7b9c011af8b5',
     };
-    // reference only the last 5 performances?
-    // 1. Bench Press eID = bf61dcb9-7147-4bdd-af5e-c987f2c2439a
-    // 2. Squats eID = 5850e575-4f8d-4723-bb1f-6807fbab1458
-    // 3. Deadlift eID = 4c08bff3-33d6-4ff2-9252-97ab9164349d
-    // 4. Pullups eID = 6a10f694-25bd-4824-b2a2-bfb21b4167c4
-    // If the standards have no data,
-    // it needs to be discounted and not
-    // counted in the averagedDS
+
     const recentBenchPressPerformances =
       await prisma.performedExercise.findMany({
         where: {
@@ -112,17 +105,17 @@ export const standardized_exercise_get = async (
 
     const average = averageMultipleDatasets([
       calculate1RepMax(recentBenchPressPerformances, true),
-      calculate1RepMax(recentSquatsPerformances, true),
+      calculate1RepMax(recentPullupsPerformances, true, true, 83),
       calculate1RepMax(recentDeadliftsPerformances, true),
-      calculate1RepMax(recentPullupsPerformances, true),
+      calculate1RepMax(recentSquatsPerformances, true),
       calculate1RepMax(recentShoulderPressPerformances, true),
     ]);
 
     const averagedStandards = calculateStandardAvg(
       addExerciseIdx([
         recentBenchPressPerformances,
-        recentDeadliftsPerformances,
         recentPullupsPerformances,
+        recentDeadliftsPerformances,
         recentSquatsPerformances,
         recentShoulderPressPerformances,
       ]),
@@ -148,9 +141,9 @@ export const standardized_exercise_maxes_get = async (
     const { user, count } = req.query;
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
-      squats: '5850e575-4f8d-4723-bb1f-6807fbab1458',
-      deadlifts: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
       pullups: '6a10f694-25bd-4824-b2a2-bfb21b4167c4',
+      deadlifts: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
+      squats: '5850e575-4f8d-4723-bb1f-6807fbab1458',
       shoulderPress: 'a00e222e-b2b4-4447-9274-7b9c011af8b5',
     };
 
@@ -236,7 +229,7 @@ export const standardized_exercise_maxes_get = async (
 
     const max = [
       Math.max(...calculate1RepMax(recentBenchPressPerformances, false)),
-      Math.max(...calculate1RepMax(recentPullupsPerformances, false)),
+      Math.max(...calculate1RepMax(recentPullupsPerformances, false, true, 83)),
       Math.max(...calculate1RepMax(recentSquatsPerformances, false)),
       Math.max(...calculate1RepMax(recentDeadliftsPerformances, false)),
       Math.max(...calculate1RepMax(recentShoulderPressPerformances, false)),

@@ -46,7 +46,7 @@ export const performed_exercises_post = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { performedWorkout, exercise, sets, user } = req.body;
+  const { performedWorkout, exercise, sets, user, date } = req.body;
   try {
     // Post a new exercise, connect to a workout IF the user selected a workout from the list.
     // It does not HAVE to be connected to a workout.
@@ -58,7 +58,8 @@ export const performed_exercises_post = async (
             data: sets as PerformedSets,
           },
         },
-        exercise: { connect: { id: exercise } },
+        /*         date: date || Date.now(),
+         */ exercise: { connect: { id: exercise } },
         performedWorkout: { connect: { id: performedWorkout } },
         user: { connect: { id: user } },
       },
