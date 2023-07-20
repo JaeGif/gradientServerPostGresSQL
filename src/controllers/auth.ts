@@ -8,7 +8,6 @@ export const auth_local = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('querying');
   passport.authenticate(
     'login',
     { session: false },
@@ -17,9 +16,7 @@ export const auth_local = async (
       if (err) throw new Error(err); // Generate token
       const token = generateToken(user.id);
       return res.status(201).json({
-        status: 'success',
         data: {
-          message: 'Welcome back.',
           user,
           token,
         },
@@ -41,9 +38,7 @@ export const auth_register = async (
       if (err) throw new Error(err); // Generate token
       const token = generateToken(user.id);
       return res.status(201).json({
-        status: 'success',
         data: {
-          message: 'Account created.',
           user,
           token,
         },
@@ -72,6 +67,5 @@ export const auth_github_redirect = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.user);
   res.redirect(process.env.CLIENT_URL!);
 };

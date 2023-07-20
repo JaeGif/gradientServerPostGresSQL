@@ -23,14 +23,12 @@ export default passport.use(
       done: Function
     ) => {
       // find user
-      console.log('passing');
 
       const user = await prisma.user.findFirst({
         where: {
           githubId: profile.id,
         },
       });
-      console.log(user);
       if (!user) {
         const user = await prisma.user.create({
           data: {
@@ -44,7 +42,6 @@ export default passport.use(
           },
         });
       }
-      console.log('tokens', accessToken, refreshToken);
       done(null, user);
 
       /*       const user = prisma.user.findFirst({
@@ -139,7 +136,6 @@ const params = {
 
 export const local_strategy = function () {
   const strategy = new JWT.Strategy(params, async function (payload, done) {
-    console.log(payload);
     const user = await prisma.user.findFirst({
       where: {
         id: payload.id,
@@ -175,7 +171,6 @@ passport.use(
   new Strategy(options, async (req, email, password, cb) => {
     try {
       // Check if user found
-      console.log(email, password);
       const existsEmail = await prisma.user.findFirst({ where: { email } });
       if (existsEmail)
         return cb(null, false, {
@@ -214,10 +209,11 @@ passport.use(
     try {
       // Check if user found
       const user = await prisma.user.findFirst({ where: { email } });
-      if (!user)
+      if (!user) {
         return cb(null, false, {
           message: 'No user found.',
         });
+      }
       // Compare password
       // if you make password required, this will be good
       const validPassword = await compare(password, user.password!);

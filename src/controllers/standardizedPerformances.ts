@@ -15,12 +15,12 @@ export const standardized_exercise_get = async (
 ) => {
   try {
     const { user, count, userGender, units } = req.query;
-    console.log('begin');
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
       squats: '5850e575-4f8d-4723-bb1f-6807fbab1458',
       deadlifts: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
       pullups: '6a10f694-25bd-4824-b2a2-bfb21b4167c4',
+      shoulderPress: 'a00e222e-b2b4-4447-9274-7b9c011af8b5',
     };
     // reference only the last 5 performances?
     // 1. Bench Press eID = bf61dcb9-7147-4bdd-af5e-c987f2c2439a
@@ -93,12 +93,29 @@ export const standardized_exercise_get = async (
       },
       take: parseInt(count as string),
     });
+    const recentShoulderPressPerformances =
+      await prisma.performedExercise.findMany({
+        where: {
+          userId: user as string,
+          exerciseId: referenceIdxTable.shoulderPress,
+        },
+        include: {
+          exercise: true,
+          performedWorkout: true,
+          sets: true,
+        },
+        orderBy: {
+          date: 'desc',
+        },
+        take: parseInt(count as string),
+      });
 
     const average = averageMultipleDatasets([
       calculate1RepMax(recentBenchPressPerformances, true),
       calculate1RepMax(recentSquatsPerformances, true),
       calculate1RepMax(recentDeadliftsPerformances, true),
       calculate1RepMax(recentPullupsPerformances, true),
+      calculate1RepMax(recentShoulderPressPerformances, true),
     ]);
 
     const averagedStandards = calculateStandardAvg(
@@ -107,6 +124,7 @@ export const standardized_exercise_get = async (
         recentDeadliftsPerformances,
         recentPullupsPerformances,
         recentSquatsPerformances,
+        recentShoulderPressPerformances,
       ]),
       userGender as 'm' | 'f',
       units as 'kg' | 'lb'
