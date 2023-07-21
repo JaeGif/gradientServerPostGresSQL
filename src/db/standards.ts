@@ -2,6 +2,13 @@ type exerciseLevel = {
   exercise: string;
   exerciseId: string;
   level: {
+    untrained: {
+      reps?: number;
+      weight: {
+        kg: number;
+        lb: number;
+      };
+    };
     beginner: {
       ratio?: number;
       reps?: number;
@@ -57,6 +64,7 @@ export const standards: {
         exercise: 'bench press',
         exerciseId: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
         level: {
+          untrained: { weight: { kg: 45, lb: 100 } },
           beginner: { ratio: 0.5, weight: { kg: 47, lb: 103 } },
           novice: { ratio: 0.75, weight: { kg: 70, lb: 154 } },
           intermediate: { ratio: 1.25, weight: { kg: 98, lb: 217 } },
@@ -68,6 +76,7 @@ export const standards: {
         exerciseId: '6a10f694-25bd-4824-b2a2-bfb21b4167c4',
         exercise: 'pull up',
         level: {
+          untrained: { reps: 0, weight: { kg: -20, lb: -44 } },
           beginner: { reps: 0, weight: { kg: -13, lb: -28 } },
           novice: { reps: 5, weight: { kg: 8, lb: 18 } },
           intermediate: { reps: 14, weight: { kg: 34, lb: 75 } },
@@ -79,6 +88,7 @@ export const standards: {
         exerciseId: '5850e575-4f8d-4723-bb1f-6807fbab1458',
         exercise: 'squat',
         level: {
+          untrained: { weight: { kg: 59, lb: 130 } },
           beginner: { ratio: 0.75, weight: { kg: 64, lb: 141 } },
           novice: { ratio: 1.25, weight: { kg: 93, lb: 206 } },
           intermediate: { ratio: 1.5, weight: { kg: 130, lb: 287 } },
@@ -90,6 +100,7 @@ export const standards: {
         exerciseId: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
         exercise: 'deadlift',
         level: {
+          untrained: { weight: { kg: 68, lb: 150 } },
           beginner: { ratio: 1, weight: { kg: 78, lb: 173 } },
           novice: { ratio: 1.5, weight: { kg: 112, lb: 246 } },
           intermediate: { ratio: 2, weight: { kg: 152, lb: 336 } },
@@ -101,6 +112,7 @@ export const standards: {
         exerciseId: 'a00e222e-b2b4-4447-9274-7b9c011af8b5',
         exercise: 'shoulder press',
         level: {
+          untrained: { weight: { kg: 29, lb: 63 } },
           beginner: { ratio: 0.35, weight: { kg: 30, lb: 66 } },
           novice: { ratio: 0.55, weight: { kg: 45, lb: 99 } },
           intermediate: { ratio: 0.8, weight: { kg: 64, lb: 142 } },
@@ -114,6 +126,7 @@ export const standards: {
         exerciseId: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
         exercise: 'bench press',
         level: {
+          untrained: { weight: { kg: 25, lb: 55 } },
           beginner: { ratio: 0.25, weight: { kg: 17, lb: 38 } },
           novice: { ratio: 0.5, weight: { kg: 31, lb: 69 } },
           intermediate: { ratio: 0.75, weight: { kg: 51, lb: 111 } },
@@ -125,6 +138,7 @@ export const standards: {
         exerciseId: '6a10f694-25bd-4824-b2a2-bfb21b4167c4',
         exercise: 'pull up',
         level: {
+          untrained: { reps: 0, weight: { kg: -32, lb: -71 } },
           beginner: { reps: 0, weight: { kg: -22, lb: -48 } },
           novice: { reps: 0, weight: { kg: -8, lb: -17 } },
           intermediate: { reps: 6, weight: { kg: 10, lb: 22 } },
@@ -136,6 +150,7 @@ export const standards: {
         exerciseId: '5850e575-4f8d-4723-bb1f-6807fbab1458',
         exercise: 'squat',
         level: {
+          untrained: { weight: { kg: 39, lb: 85 } },
           beginner: { ratio: 0.5, weight: { kg: 30, lb: 65 } },
           novice: { ratio: 0.75, weight: { kg: 48, lb: 107 } },
           intermediate: { ratio: 1.25, weight: { kg: 73, lb: 161 } },
@@ -148,6 +163,7 @@ export const standards: {
         exerciseId: '4c08bff3-33d6-4ff2-9252-97ab9164349d',
         exercise: 'deadlift',
         level: {
+          untrained: { weight: { kg: 45, lb: 100 } },
           beginner: { ratio: 0.5, weight: { kg: 38, lb: 84 } },
           novice: { ratio: 1, weight: { kg: 60, lb: 132 } },
           intermediate: { ratio: 1.25, weight: { kg: 87, lb: 193 } },
@@ -159,6 +175,7 @@ export const standards: {
         exerciseId: 'a00e222e-b2b4-4447-9274-7b9c011af8b5',
         exercise: 'shoulder press',
         level: {
+          untrained: { weight: { kg: 16, lb: 35 } },
           beginner: { ratio: 0.2, weight: { kg: 13, lb: 28 } },
           novice: { ratio: 0.35, weight: { kg: 22, lb: 48 } },
           intermediate: { ratio: 0.5, weight: { kg: 34, lb: 75 } },
