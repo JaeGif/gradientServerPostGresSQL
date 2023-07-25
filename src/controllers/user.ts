@@ -25,6 +25,7 @@ export const user_get = async (
       where: {
         id: req.params.id,
       },
+      include: { goal: true },
     });
     res.json({ user }).status(200);
   } catch (error) {

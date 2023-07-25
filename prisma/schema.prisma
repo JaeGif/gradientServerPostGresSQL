@@ -18,7 +18,9 @@ model User {
   accountId         String?
   password          String?
   age               Int?
-  weight            Json              
+  weight            Json
+  bodyFatPercentage Int?
+  goal              Goal?
   email             String              @unique
   preferences       Json
   createdAt         DateTime            @default(now())
@@ -27,6 +29,15 @@ model User {
   performedWorkouts PerformedWorkout[]
   performedExercise PerformedExercise[]
   gender            String
+}
+
+model Goal {
+  id                String @id @default(uuid())
+  userId            String @unique
+  user              User   @relation(fields: [userId], references: [id])
+  lifts             Json
+  weight            Int?
+  bodyFatPercentage Int?
 }
 
 model MuscleGroups {
