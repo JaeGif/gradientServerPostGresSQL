@@ -9,6 +9,7 @@ import exerciseRouter from './routes/exercise';
 import performedExerciseRouter from './routes/performedExercise';
 import standardizedPerformanceRouter from './routes/standardizedPerformances';
 import goalRouter from './routes/goal';
+import noteRouter from './routes/note';
 import authRouter from './routes/auth';
 import authMiddleware from './middleware/auth';
 import session from 'express-session';
@@ -57,6 +58,7 @@ app.use('/api', exerciseRouter);
 app.use('/api', performedExerciseRouter);
 app.use('/api', standardizedPerformanceRouter);
 app.use('/api', goalRouter);
+app.use('/api', noteRouter);
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`listening on port ${process.env.PORT}`);

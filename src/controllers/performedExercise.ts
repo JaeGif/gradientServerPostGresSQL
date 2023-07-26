@@ -64,6 +64,7 @@ export const performed_exercises_post = async (
         user: { connect: { id: user } },
       },
     });
+    console.log(performedExercise);
     res.json({ performedExercise }).status(200);
   } catch (error) {
     console.error(error);

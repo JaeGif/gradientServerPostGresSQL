@@ -17,7 +17,7 @@ export const notes_get = async (
       },
       take: 10,
     });
-    return res.json({ userNotes }).status(200);
+    userNotes ? res.json({ userNotes }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
@@ -34,7 +34,7 @@ export const note_get = async (
         id: req.params.id,
       },
     });
-    return res.json({ note }).status(200);
+    note ? res.json({ note }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
@@ -52,7 +52,7 @@ export const note_put = async (
         text: req.body.text,
       },
     });
-    return res.json({ note }).status(200);
+    note ? res.json({ note }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
@@ -64,13 +64,13 @@ export const note_post = async (
   next: NextFunction
 ) => {
   try {
-    const note = prisma.note.create({
+    const note = await prisma.note.create({
       data: {
         text: req.body.text,
         user: { connect: { id: req.body.userId } },
       },
     });
-    return res.json({ note }).status(200);
+    note ? res.json({ note }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
@@ -82,7 +82,7 @@ export const note_delete = async (
   next: NextFunction
 ) => {
   try {
-    const note = prisma.note.delete({ where: { id: req.params.id } });
+    const note = await prisma.note.delete({ where: { id: req.params.id } });
     return res.json({ note }).status(200);
   } catch (error) {
     console.error(error);
