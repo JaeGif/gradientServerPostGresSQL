@@ -21,6 +21,7 @@ model User {
   weight            Json
   bodyFatPercentage Int?
   goal              Goal?
+  notes             Note[]
   email             String              @unique
   preferences       Json
   createdAt         DateTime            @default(now())
@@ -101,4 +102,12 @@ model PerformedWorkout {
   date               DateTime            @default(now())
   user               User                @relation(fields: [userId], references: [id])
   userId             String
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  text      String
 }
