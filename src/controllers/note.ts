@@ -13,7 +13,7 @@ export const notes_get = async (
         userId: user as string,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
       take: 10,
     });
