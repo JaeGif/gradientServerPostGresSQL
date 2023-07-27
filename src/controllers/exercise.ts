@@ -7,8 +7,44 @@ export const exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    const exercises = await prisma.exercise.findMany({});
-    res.json({ exercises }).status(200);
+    const { muscleGroup, userId } = req.query;
+    let query = {};
+    if (muscleGroup) {
+      const userPerformedIdx = await prisma.performedExercise.findMany({
+        where: {
+          userId: userId as string,
+        },
+      });
+      if (muscleGroup !== 'standards' && muscleGroup !== 'all') {
+        query = {
+          include: { muscleGroups: true },
+          where: {
+            muscleGroups: { name: muscleGroup as string },
+            id: { in: userPerformedIdx.map((el) => el.exerciseId) },
+          },
+        };
+      } else if (muscleGroup === 'standards') {
+        query = {
+          where: {
+            standardized: true,
+            id: { in: userPerformedIdx.map((el) => el.exerciseId) },
+          },
+        };
+      } else if (muscleGroup === 'all') {
+        query = {
+          where: {
+            id: { in: userPerformedIdx.map((el) => el.exerciseId) },
+          },
+        };
+      }
+
+      const exercises = await prisma.exercise.findMany(query);
+
+      res.json({ exercises }).status(200);
+    } else {
+      const exercises = await prisma.exercise.findMany(query);
+      res.json({ exercises }).status(200);
+    }
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
