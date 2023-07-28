@@ -7,7 +7,7 @@ export const exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    const { muscleGroup, userId } = req.query;
+    const { muscleGroup, userId, name } = req.query;
     let query = {};
     if (muscleGroup) {
       const userPerformedIdx = await prisma.performedExercise.findMany({
@@ -40,6 +40,12 @@ export const exercises_get = async (
 
       const exercises = await prisma.exercise.findMany(query);
 
+      res.json({ exercises }).status(200);
+    } else if (name) {
+      query = {
+        where: { name: { startsWith: name as string } },
+      };
+      const exercises = await prisma.exercise.findMany(query);
       res.json({ exercises }).status(200);
     } else {
       const exercises = await prisma.exercise.findMany(query);
