@@ -8,7 +8,9 @@ export const performed_exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    const { exercise, user, standardized } = req.query;
+    let { exercise, user, standardized, sort, limit } = req.query;
+    sort = sort || 'asc';
+    console.log(req.query);
     if (standardized) {
       const performedExercises = await prisma.performedExercise.findMany({
         where: {
@@ -17,23 +19,55 @@ export const performed_exercises_get = async (
         },
         include: { exercise: true, performedWorkout: true, sets: true },
         orderBy: {
-          date: 'asc',
+          date: sort as 'asc' | 'desc',
         },
       });
       res.json({ performedExercises }).status(200);
     } else {
-      const performedExercises = await prisma.performedExercise.findMany({
-        where: {
-          exerciseId: exercise as string,
-          userId: user as string,
-        },
-        include: { exercise: true, performedWorkout: true, sets: true },
-        orderBy: {
-          date: 'asc',
-        },
-      });
-
-      res.json({ performedExercises }).status(200);
+      if ((limit && !exercise) || (limit && exercise === 'undefined')) {
+        const performedExercises = await prisma.performedExercise.findMany({
+          where: {
+            userId: user as string,
+          },
+          include: {
+            exercise: { include: { muscleGroups: true } },
+            sets: true,
+          },
+          orderBy: {
+            date: sort as 'asc' | 'desc',
+          },
+          take: parseInt(limit as string),
+        });
+        res.json({ performedExercises }).status(200);
+      } else if (limit && exercise !== 'undefined') {
+        const performedExercises = await prisma.performedExercise.findMany({
+          where: {
+            exerciseId: exercise as string,
+            userId: user as string,
+          },
+          include: {
+            exercise: { include: { muscleGroups: true } },
+            sets: true,
+          },
+          orderBy: {
+            date: sort as 'asc' | 'desc',
+          },
+          take: parseInt(limit as string),
+        });
+        res.json({ performedExercises }).status(200);
+      } else {
+        const performedExercises = await prisma.performedExercise.findMany({
+          where: {
+            exerciseId: exercise as string,
+            userId: user as string,
+          },
+          include: { exercise: true, performedWorkout: true, sets: true },
+          orderBy: {
+            date: sort as 'asc' | 'desc',
+          },
+        });
+        res.json({ performedExercises }).status(200);
+      }
     }
   } catch (error) {
     console.error(error);
@@ -96,6 +130,33 @@ export const performed_exercise_put = async (
 ) => {
   try {
     // edit a single performed exercise
+    const { data } = req.body;
+    const performedExercise = await prisma.performedExercise.update({
+      where: { id: req.params.id as string },
+      data: data,
+    });
+    return performedExercise
+      ? res.json({ performedExercise }).status(200)
+      : res.json({ performedExercise: undefined }).status(404);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(404);
+  }
+};
+
+export const performed_exercise_delete = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    // edit a single performed exercise
+    const performedExercise = await prisma.performedExercise.delete({
+      where: { id: req.params.id as string },
+    });
+    return performedExercise
+      ? res.json({ performedExercise }).status(200)
+      : res.json({ performedExercise: undefined }).status(404);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);

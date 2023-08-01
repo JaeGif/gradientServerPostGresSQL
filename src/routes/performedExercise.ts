@@ -20,5 +20,13 @@ router.post(
   '/performedExercises/:id',
   performedExerciseController.performed_exercises_post
 );
+router.put(
+  '/performedExercises/:id',
+  performedExerciseController.performed_exercise_put
+);
+router.delete(
+  '/performedExercises/:id',
+  performedExerciseController.performed_exercise_delete
+);
 
 export default router;
