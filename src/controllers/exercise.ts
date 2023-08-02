@@ -44,6 +44,7 @@ export const exercises_get = async (
     } else if (name) {
       query = {
         where: { name: { startsWith: name as string } },
+        include: { muscleGroups: true },
       };
       const exercises = await prisma.exercise.findMany(query);
       res.json({ exercises }).status(200);

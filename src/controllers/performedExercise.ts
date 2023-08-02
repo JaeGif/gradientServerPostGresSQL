@@ -10,7 +10,6 @@ export const performed_exercises_get = async (
   try {
     let { exercise, user, standardized, sort, limit } = req.query;
     sort = sort || 'asc';
-    console.log(req.query);
     if (standardized) {
       const performedExercises = await prisma.performedExercise.findMany({
         where: {
@@ -98,7 +97,6 @@ export const performed_exercises_post = async (
         user: { connect: { id: user } },
       },
     });
-    console.log(performedExercise);
     res.json({ performedExercise }).status(200);
   } catch (error) {
     console.error(error);
