@@ -65,8 +65,15 @@ export const exercise_post = async (
 ) => {
   // Make a new exercise for the exercise library
   try {
-    const exercises = await prisma.exercise.findMany({});
-    res.json({ exercises }).status(200);
+    const { name, muscleGroupsId } = req.body;
+    const exercise = await prisma.exercise.create({
+      data: {
+        name: name as string,
+        muscleGroups: { connect: { id: muscleGroupsId as string } },
+        standardized: false,
+      },
+    });
+    res.json({ exercise }).status(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);

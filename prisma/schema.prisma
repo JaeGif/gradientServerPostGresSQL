@@ -49,13 +49,13 @@ model MuscleGroups {
 
 model Exercise {
   id                String              @id @default(uuid())
-  name              String
+  name              String              @unique
   workout           Workout[]
   performedExercise PerformedExercise[]
   muscleGroups      MuscleGroups        @relation(fields: [muscleGroupsId], references: [id])
   muscleGroupsId    String
-  reps              Int
-  sets              Int
+  reps              Int?
+  sets              Int?
   standardized      Boolean
 }
 
