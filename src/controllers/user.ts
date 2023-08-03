@@ -39,15 +39,34 @@ export const user_put = async (
   res: Response,
   next: NextFunction
 ) => {
-  const data = JSON.parse(req.body);
+  const { weight, bodyFatPercentage, preferences } = req.body;
+  let innerPreferences: {
+    unit?: 'kg' | 'lb';
+    standard?: 'percentile' | 'ratio';
+  } = {};
+  let updateFields: {
+    weight?: number;
+    bodyFatPercentage?: number;
+    preferences?: any;
+  } = {};
+  // update only selected fields
+  if (weight) updateFields.weight = weight as number;
+  if (bodyFatPercentage) updateFields.bodyFatPercentage as number;
+
+  if (preferences) {
+    if (preferences.unit) innerPreferences.unit = preferences.unit;
+    if (preferences.standard) innerPreferences.standard = preferences.standard;
+    updateFields.preferences = innerPreferences;
+  }
+  console.log(updateFields);
   try {
     const user = await prisma.user.update({
       where: {
         id: req.params.id,
       },
-      data,
+      data: updateFields,
     });
-    res.json({ user }).status(200);
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(404);
