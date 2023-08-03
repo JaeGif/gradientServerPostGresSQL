@@ -23,11 +23,11 @@ export const goal_put = async (
   try {
     let updateFields: {
       lifts?: {
-        benchPress?: string;
-        pullups?: string;
-        squats?: string;
-        deadlifts?: string;
-        shoulderPress?: string;
+        benchPress?: number;
+        pullup?: number;
+        squats?: number;
+        deadlift?: number;
+        shoulderPress?: number;
       };
       weight?: number;
       bodyFatPercentage?: number;
@@ -36,6 +36,8 @@ export const goal_put = async (
     if (req.body.weight) updateFields.weight = req.body.weight;
     if (req.body.bodyFatPercentage)
       updateFields.bodyFatPercentage = req.body.bodyFatPercentage;
+
+    console.log(updateFields);
     const updateGoal = await prisma.goal.update({
       where: { id: req.params.id },
       data: updateFields,

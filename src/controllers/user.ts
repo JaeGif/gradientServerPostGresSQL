@@ -50,8 +50,10 @@ export const user_put = async (
     preferences?: any;
   } = {};
   // update only selected fields
+  console.log(req.body);
   if (weight) updateFields.weight = weight as number;
-  if (bodyFatPercentage) updateFields.bodyFatPercentage as number;
+  if (bodyFatPercentage)
+    updateFields.bodyFatPercentage = bodyFatPercentage as number;
 
   if (preferences) {
     if (preferences.unit) innerPreferences.unit = preferences.unit;
