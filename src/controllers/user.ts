@@ -27,6 +27,7 @@ export const user_get = async (
       },
       include: { goal: true },
     });
+    console.log(user);
     res.json({ user }).status(200);
   } catch (error) {
     console.error(error);
@@ -45,22 +46,22 @@ export const user_put = async (
     standard?: 'percentile' | 'ratio';
   } = {};
   let updateFields: {
-    weight?: number;
+    weight?: { value?: number; unit?: 'kg' | 'lb' };
     bodyFatPercentage?: number;
     preferences?: any;
   } = {};
   // update only selected fields
-  console.log(req.body);
-  if (weight) updateFields.weight = weight as number;
+  if (weight)
+    updateFields.weight = { value: weight as number, unit: preferences.unit };
   if (bodyFatPercentage)
     updateFields.bodyFatPercentage = bodyFatPercentage as number;
-
   if (preferences) {
     if (preferences.unit) innerPreferences.unit = preferences.unit;
     if (preferences.standard) innerPreferences.standard = preferences.standard;
     updateFields.preferences = innerPreferences;
   }
   console.log(updateFields);
+
   try {
     const user = await prisma.user.update({
       where: {
@@ -68,6 +69,8 @@ export const user_put = async (
       },
       data: updateFields,
     });
+    console.log(user);
+
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
