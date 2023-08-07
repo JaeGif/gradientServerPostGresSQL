@@ -12,7 +12,7 @@ import goalRouter from './routes/goal';
 import noteRouter from './routes/note';
 import authRouter from './routes/auth';
 import authMiddleware from './middleware/auth';
-import session from 'express-session';
+import session from 'cookie-session';
 import passport from 'passport';
 import cookieSession from 'cookie-session';
 
@@ -21,9 +21,6 @@ const authMiddleWareUser = authMiddleware;
 app.use(
   session({
     secret: process.env.SESSION_KEY_EXPRESS_S!,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {},
     name: 'session',
   })
 );
