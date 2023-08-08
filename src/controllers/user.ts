@@ -40,17 +40,19 @@ export const user_put = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { weight, bodyFatPercentage, preferences } = req.body;
+  const { weight, gender, bodyFatPercentage, preferences } = req.body;
   let innerPreferences: {
     unit?: 'kg' | 'lb';
     standard?: 'percentile' | 'ratio';
   } = {};
   let updateFields: {
+    gender?: 'm' | 'f';
     weight?: { value?: number; unit?: 'kg' | 'lb' };
     bodyFatPercentage?: number;
     preferences?: any;
   } = {};
   // update only selected fields
+  if (gender) updateFields.gender = gender as 'm' | 'f';
   if (weight)
     updateFields.weight = { value: weight as number, unit: preferences.unit };
   if (bodyFatPercentage)
@@ -69,8 +71,6 @@ export const user_put = async (
       },
       data: updateFields,
     });
-    console.log(user);
-
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
