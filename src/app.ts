@@ -17,6 +17,11 @@ import passport from 'passport';
 import cookieSession from 'cookie-session';
 
 const authMiddleWareUser = authMiddleware;
+const whitelist = [
+  'http://localhost:5173',
+  'https://gradientfitness.pro',
+  'https://www.gradientfitness.pro',
+];
 
 app.use(
   session({
@@ -43,7 +48,17 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user: Express.User, done) {
   done(null, user);
 });
-app.use(cors());
+app.use(
+  cors({
+    origin(requestOrigin, callback) {
+      if (whitelist.indexOf(requestOrigin as string) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+  })
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
