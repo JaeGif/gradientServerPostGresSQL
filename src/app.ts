@@ -48,9 +48,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user: Express.User, done) {
   done(null, user);
 });
-
-app.options(
-  '*',
+app.use(
   cors({
     origin(requestOrigin, callback) {
       if (whitelist.indexOf(requestOrigin as string) !== -1) {
@@ -61,6 +59,7 @@ app.options(
     },
   })
 );
+app.options('*', cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
