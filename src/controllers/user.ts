@@ -91,10 +91,10 @@ export const user_emailcheck = async (
     });
     if (!user) {
       console.log('not found');
-      return res.json({ message: 'Success' }).status(200);
+      return res.json({ message: 'Success' }).sendStatus(200);
     } else {
       console.log('found');
-      return res.json({ message: 'Email already taken' }).status(409);
+      return res.json({ message: 'Email already taken' }).sendStatus(409);
     }
   } catch (error) {
     console.error(error);
