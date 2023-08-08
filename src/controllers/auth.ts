@@ -36,6 +36,7 @@ export const auth_register = async (
     (err: string, user: User) => {
       // Check for errors
       if (err) throw new Error(err); // Generate token
+      console.log(user);
       const token = generateToken(user.id);
       return res.status(201).json({
         data: {
