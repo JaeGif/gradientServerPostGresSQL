@@ -86,12 +86,14 @@ export const user_emailcheck = async (
   try {
     const user = await prisma.user.findFirst({
       where: {
-        email: req.body.email,
+        email: req.body.email as string,
       },
     });
     if (!user) {
+      console.log('not found');
       res.json({ message: 'Success' }).status(200);
     } else {
+      console.log('found');
       res.json({ message: 'Email already taken' }).status(409);
     }
   } catch (error) {
