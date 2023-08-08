@@ -78,6 +78,28 @@ export const user_put = async (
   }
 };
 
+export const user_emailcheck = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: req.body.email,
+      },
+    });
+    if (!user) {
+      res.json({ message: 'Success' }).status(200);
+    } else {
+      res.json({ message: 'Email already taken' }).status(409);
+    }
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(404);
+  }
+};
+
 export const user_delete = async (
   req: Request,
   res: Response,
