@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { prisma } from '../utils/prisma.service'; // current client
+import { hash } from '../utils/authUtils';
 
 export const users_get = async (
   req: Request,
@@ -27,7 +28,6 @@ export const user_get = async (
       },
       include: { goal: true },
     });
-    console.log(user);
     res.json({ user }).status(200);
   } catch (error) {
     console.error(error);
@@ -40,7 +40,8 @@ export const user_put = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { weight, gender, bodyFatPercentage, preferences } = req.body;
+  const { weight, gender, bodyFatPercentage, preferences, newPassword } =
+    req.body;
   let innerPreferences: {
     unit?: 'kg' | 'lb';
     standard?: 'percentile' | 'ratio';
@@ -62,18 +63,34 @@ export const user_put = async (
     if (preferences.standard) innerPreferences.standard = preferences.standard;
     updateFields.preferences = innerPreferences;
   }
-
-  try {
-    const user = await prisma.user.update({
-      where: {
-        id: req.params.id,
-      },
-      data: updateFields,
-    });
-    res.sendStatus(200);
-  } catch (error) {
-    console.error(error);
-    res.sendStatus(404);
+  if (newPassword) {
+    try {
+      const user = await prisma.user.update({
+        where: {
+          id: req.params.id,
+        },
+        data: {
+          password: await hash(newPassword as string),
+        },
+      });
+      res.sendStatus(200);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(404);
+    }
+  } else {
+    try {
+      const user = await prisma.user.update({
+        where: {
+          id: req.params.id,
+        },
+        data: updateFields,
+      });
+      res.sendStatus(200);
+    } catch (error) {
+      console.error(error);
+      res.sendStatus(404);
+    }
   }
 };
 

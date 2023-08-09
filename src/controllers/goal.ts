@@ -23,12 +23,10 @@ export const goal_post = async (
   try {
     const goalData = req.body.goal;
     const userId = req.body.userId;
-    console.log(req.body);
-    console.log(goalData, userId);
+
     const goal = await prisma.goal.create({
       data: { ...goalData, user: { connect: { id: userId as string } } },
     });
-    console.log(goal);
     res.json({ goal }).status(200);
   } catch (error) {
     console.error(error);
@@ -57,7 +55,6 @@ export const goal_put = async (
     if (req.body.bodyFatPercentage)
       updateFields.bodyFatPercentage = req.body.bodyFatPercentage;
 
-    console.log(updateFields);
     const updateGoal = await prisma.goal.update({
       where: { id: req.params.id },
       data: updateFields,
