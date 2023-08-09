@@ -179,7 +179,6 @@ passport.use(
       // Create the user
       else {
         const { gender, preferences, username, age, weight } = req.body;
-
         const user = await prisma.user.create({
           data: {
             gender: gender,
@@ -194,6 +193,22 @@ passport.use(
             password: await hash(password),
           },
         });
+        const goal = await prisma.goal.create({
+          data: {
+            user: { connect: { id: user.id } },
+            unit: 'kg',
+            lifts: {
+              squats: undefined,
+              benchPress: undefined,
+              deadlift: undefined,
+              pullup: undefined,
+              shoulderPress: undefined,
+            },
+            weight: undefined,
+            bodyFatPercentage: undefined,
+          },
+        });
+
         return cb(null, user);
       }
     } catch (err) {

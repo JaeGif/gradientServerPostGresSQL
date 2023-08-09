@@ -62,7 +62,6 @@ export const user_put = async (
     if (preferences.standard) innerPreferences.standard = preferences.standard;
     updateFields.preferences = innerPreferences;
   }
-  console.log(updateFields);
 
   try {
     const user = await prisma.user.update({
@@ -90,10 +89,8 @@ export const user_emailcheck = async (
       },
     });
     if (!user) {
-      console.log('not found');
       res.sendStatus(200);
     } else {
-      console.log('found');
       res.sendStatus(409);
     }
   } catch (error) {

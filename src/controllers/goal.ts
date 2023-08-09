@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { prisma } from '../utils/prisma.service'; // current client
+import { connect } from 'http2';
 
 export const goal_get = async (
   req: Request,
@@ -14,7 +15,26 @@ export const goal_get = async (
     res.sendStatus(404);
   }
 };
-
+export const goal_post = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const goalData = req.body.goal;
+    const userId = req.body.userId;
+    console.log(req.body);
+    console.log(goalData, userId);
+    const goal = await prisma.goal.create({
+      data: { ...goalData, user: { connect: { id: userId as string } } },
+    });
+    console.log(goal);
+    res.json({ goal }).status(200);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(404);
+  }
+};
 export const goal_put = async (
   req: Request,
   res: Response,
