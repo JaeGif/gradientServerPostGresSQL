@@ -104,11 +104,25 @@ export const standardized_exercise_get = async (
       });
 
     const average = averageMultipleDatasets([
-      calculate1RepMax(recentBenchPressPerformances, true),
-      calculate1RepMax(recentPullupsPerformances, true, true, 83),
-      calculate1RepMax(recentDeadliftsPerformances, true),
-      calculate1RepMax(recentSquatsPerformances, true),
-      calculate1RepMax(recentShoulderPressPerformances, true),
+      calculate1RepMax(
+        recentBenchPressPerformances,
+        units as 'kg' | 'lb',
+        true
+      ),
+      calculate1RepMax(
+        recentPullupsPerformances,
+        units as 'kg' | 'lb',
+        true,
+        true,
+        83
+      ),
+      calculate1RepMax(recentDeadliftsPerformances, units as 'kg' | 'lb', true),
+      calculate1RepMax(recentSquatsPerformances, units as 'kg' | 'lb', true),
+      calculate1RepMax(
+        recentShoulderPressPerformances,
+        units as 'kg' | 'lb',
+        true
+      ),
     ]);
 
     const averagedStandards = calculateStandardAvg(
@@ -138,7 +152,8 @@ export const standardized_exercise_maxes_get = async (
   next: NextFunction
 ) => {
   try {
-    const { user, count } = req.query;
+    const { user, count, userWeight, units } = req.query;
+    if (user === 'undefined' || !user) return res.sendStatus(400);
     const referenceIdxTable = {
       benchPress: 'bf61dcb9-7147-4bdd-af5e-c987f2c2439a',
       pullups: '6a10f694-25bd-4824-b2a2-bfb21b4167c4',
@@ -227,14 +242,48 @@ export const standardized_exercise_maxes_get = async (
         take: parseInt(count as string),
       });
 
-    const max = [
-      Math.max(...calculate1RepMax(recentBenchPressPerformances, false)),
-      Math.max(...calculate1RepMax(recentPullupsPerformances, false, true, 83)),
-      Math.max(...calculate1RepMax(recentSquatsPerformances, false)),
-      Math.max(...calculate1RepMax(recentDeadliftsPerformances, false)),
-      Math.max(...calculate1RepMax(recentShoulderPressPerformances, false)),
-    ];
+    console.log('new bench press set', recentBenchPressPerformances[0]);
 
+    const max = [
+      Math.max(
+        ...calculate1RepMax(
+          recentBenchPressPerformances,
+          units as 'kg' | 'lb',
+          false
+        )
+      ),
+      Math.max(
+        ...calculate1RepMax(
+          recentPullupsPerformances,
+          units as 'kg' | 'lb',
+          false,
+          true,
+          userWeight as unknown as number
+        )
+      ),
+      Math.max(
+        ...calculate1RepMax(
+          recentSquatsPerformances,
+          units as 'kg' | 'lb',
+          false
+        )
+      ),
+      Math.max(
+        ...calculate1RepMax(
+          recentDeadliftsPerformances,
+          units as 'kg' | 'lb',
+          false
+        )
+      ),
+      Math.max(
+        ...calculate1RepMax(
+          recentShoulderPressPerformances,
+          units as 'kg' | 'lb',
+          false
+        )
+      ),
+    ];
+    console.log(max);
     return max ? res.json({ max }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);

@@ -30,6 +30,7 @@ export type PerformedSets = {
   weight: number;
   reps: number;
   rtf?: number;
+  unit: 'kg' | 'lb';
 };
 // Auth service types
 

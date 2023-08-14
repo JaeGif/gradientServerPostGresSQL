@@ -24,29 +24,35 @@ export const averageMultipleDatasets = (data: number[][]) => {
 
 export const calculate1RepMax = (
   data: any[],
+  units: 'kg' | 'lb',
   average: boolean,
   isPullups: boolean = false,
   userWeight?: number
 ) => {
   if (isPullups && !userWeight) return [];
-
   // unit agnostic, units that go in, are units that go out
   // use average 1RM averaging the sets in each exercise
 
   let estimatedORMArray;
 
   const calculateMax = (sets: PerformedSets[]) => {
+    // returns maxes in kg's always
     let avgForElementArr: number[] = [];
 
     for (let i = 0; i < sets.length; i++) {
       if (sets[i].reps >= 5) {
+        let modifiedWeight = sets[i].weight;
+        if (sets[i].unit !== units) {
+          if (units === 'kg') modifiedWeight = lbToKg(modifiedWeight);
+          else if (units === 'lb') modifiedWeight = kgToLb(modifiedWeight);
+        }
         if (isPullups && userWeight) {
           const brzycki =
-            (sets[i].weight + userWeight) * (36 / (37 - sets[i].reps)) -
+            (modifiedWeight + userWeight) * (36 / (37 - sets[i].reps)) -
             userWeight;
           avgForElementArr.push(brzycki);
         } else {
-          const brzycki = sets[i].weight * (36 / (37 - sets[i].reps));
+          const brzycki = modifiedWeight * (36 / (37 - sets[i].reps));
           avgForElementArr.push(brzycki);
         }
       } else if (sets[i].reps < 5 && sets[i].reps !== 0) {
