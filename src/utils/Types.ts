@@ -28,6 +28,7 @@ export type Workout = {
 export type PerformedSets = {
   index: number;
   weight: number;
+  weightUnits: { kg: number; lb: number };
   reps: number;
   rtf?: number;
   unit: 'kg' | 'lb';

@@ -33,9 +33,9 @@ model User {
 }
 
 model Goal {
-  id                String @id @default(uuid())
-  userId            String @unique
-  user              User   @relation(fields: [userId], references: [id])
+  id                String  @id @default(uuid())
+  userId            String  @unique
+  user              User    @relation(fields: [userId], references: [id])
   unit              String?
   lifts             Json
   weight            Int?
@@ -90,6 +90,7 @@ model PerformedSet {
   index               Int // index tells you what order the set was performed in the workout
   reps                Int
   weight              Float
+  weightUnits         Json?
   unit                String?
   rtf                 Int?
 }

@@ -8,10 +8,11 @@ export const performed_exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    let { exercise, user, standardized, sort, limit } = req.query;
+    let { exercise, user, standardized, sort, limit, units } = req.query;
     sort = sort || 'asc';
+    let performedExercises;
     if (standardized) {
-      const performedExercises = await prisma.performedExercise.findMany({
+      performedExercises = await prisma.performedExercise.findMany({
         where: {
           userId: user as string,
           exercise: { standardized: true },
@@ -21,10 +22,9 @@ export const performed_exercises_get = async (
           date: sort as 'asc' | 'desc',
         },
       });
-      res.json({ performedExercises }).status(200);
     } else {
       if ((limit && !exercise) || (limit && exercise === 'undefined')) {
-        const performedExercises = await prisma.performedExercise.findMany({
+        performedExercises = await prisma.performedExercise.findMany({
           where: {
             userId: user as string,
           },
@@ -37,9 +37,8 @@ export const performed_exercises_get = async (
           },
           take: parseInt(limit as string),
         });
-        res.json({ performedExercises }).status(200);
       } else if (limit && exercise !== 'undefined') {
-        const performedExercises = await prisma.performedExercise.findMany({
+        performedExercises = await prisma.performedExercise.findMany({
           where: {
             exerciseId: exercise as string,
             userId: user as string,
@@ -53,9 +52,8 @@ export const performed_exercises_get = async (
           },
           take: parseInt(limit as string),
         });
-        res.json({ performedExercises }).status(200);
       } else {
-        const performedExercises = await prisma.performedExercise.findMany({
+        performedExercises = await prisma.performedExercise.findMany({
           where: {
             exerciseId: exercise as string,
             userId: user as string,
@@ -65,8 +63,9 @@ export const performed_exercises_get = async (
             date: sort as 'asc' | 'desc',
           },
         });
-        res.json({ performedExercises }).status(200);
       }
+
+      res.json({ performedExercises }).status(200);
     }
   } catch (error) {
     console.error(error);
@@ -91,8 +90,7 @@ export const performed_exercises_post = async (
             data: sets as PerformedSets,
           },
         },
-        /*         date: date || Date.now(),
-         */ exercise: { connect: { id: exercise } },
+        exercise: { connect: { id: exercise } },
         performedWorkout: { connect: { id: performedWorkout } },
         user: { connect: { id: user } },
       },
