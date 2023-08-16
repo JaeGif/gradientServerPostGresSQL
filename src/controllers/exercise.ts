@@ -7,7 +7,7 @@ export const exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    const { muscleGroup, userId, name } = req.query;
+    let { muscleGroup, userId, name } = req.query;
     let query = {};
     if (muscleGroup) {
       const userPerformedIdx = await prisma.performedExercise.findMany({
@@ -42,8 +42,9 @@ export const exercises_get = async (
 
       res.json({ exercises }).status(200);
     } else if (name) {
+      name = name as string;
       query = {
-        where: { name: { startsWith: name as string } },
+        where: { name: { startsWith: name.toLowerCase() } },
         include: { muscleGroups: true },
       };
       const exercises = await prisma.exercise.findMany(query);
@@ -65,10 +66,11 @@ export const exercise_post = async (
 ) => {
   // Make a new exercise for the exercise library
   try {
-    const { name, muscleGroupsId } = req.body;
+    let { name, muscleGroupsId } = req.body;
+    name = name as string;
     const exercise = await prisma.exercise.create({
       data: {
-        name: name as string,
+        name: name.toLowerCase(),
         muscleGroups: { connect: { id: muscleGroupsId as string } },
         standardized: false,
       },
