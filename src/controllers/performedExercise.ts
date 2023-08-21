@@ -8,7 +8,7 @@ export const performed_exercises_get = async (
   next: NextFunction
 ) => {
   try {
-    let { exercise, user, standardized, sort, limit, units } = req.query;
+    let { exercise, user, standardized, sort, limit } = req.query;
     sort = sort || 'asc';
     let performedExercises;
     if (standardized) {
@@ -43,10 +43,12 @@ export const performed_exercises_get = async (
             exerciseId: exercise as string,
             userId: user as string,
           },
+
           include: {
             exercise: { include: { muscleGroups: true } },
             sets: true,
           },
+
           orderBy: {
             date: sort as 'asc' | 'desc',
           },
@@ -64,7 +66,6 @@ export const performed_exercises_get = async (
           },
         });
       }
-
       res.json({ performedExercises }).status(200);
     }
   } catch (error) {
