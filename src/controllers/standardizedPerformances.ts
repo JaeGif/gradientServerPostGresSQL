@@ -242,8 +242,6 @@ export const standardized_exercise_maxes_get = async (
         take: parseInt(count as string),
       });
 
-    console.log('new bench press set', recentBenchPressPerformances[0]);
-
     const max = [
       Math.max(
         ...calculate1RepMax(
@@ -283,7 +281,6 @@ export const standardized_exercise_maxes_get = async (
         )
       ),
     ];
-    console.log(max);
     return max ? res.json({ max }).status(200) : res.sendStatus(404);
   } catch (error) {
     console.error(error);
