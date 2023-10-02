@@ -15,7 +15,6 @@ const convertWeightToWeightWithUnits = async () => {
       where: { id: allSets[i].id },
       data: { weightUnits: { kg: weightInKg, lb: kgToLb(weightInKg) } },
     });
-    console.log(i, ' done');
   }
 };
 

@@ -1,8 +1,9 @@
 import express from 'express';
 const router = express.Router();
 import * as userController from '../controllers/user';
+import { local_strategy } from '../middleware/auth';
 
-router.get('/users', userController.users_get);
+router.get('/users', local_strategy().authenticate(), userController.users_get);
 router.get('/users/:id', userController.user_get);
 router.post('/users/emailcheck', userController.user_emailcheck);
 

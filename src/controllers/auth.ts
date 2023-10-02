@@ -1,5 +1,4 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { prisma } from '../utils/prisma.service'; // current client
 import passport from 'passport';
 import { generateToken } from '../utils/authUtils';
 import { User } from '@prisma/client';
@@ -15,9 +14,10 @@ export const auth_local = async (
       // Check for errors
       if (err) throw new Error(err); // Generate token
       const token = generateToken(user.id);
+      console.log('hitting endpoint', user.id);
       return res.status(201).json({
         data: {
-          user,
+          user: user.id,
           token,
         },
         statusCode: res.statusCode,

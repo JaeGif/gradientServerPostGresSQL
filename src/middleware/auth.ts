@@ -43,19 +43,6 @@ export default passport.use(
         });
       }
       done(null, user);
-
-      /*       const user = prisma.user.findFirst({
-        where: { accountId: profile.id, provider: 'github' },
-      });
-      // if user isn't real do stuff
-      if (!user) {
-        const user = await prisma.user.create({
-          accountId: profile.id,
-          username: profile.username,
-          provider: profile.provider,
-        });
-        return cb(null, profile);
-      } */
     }
   )
 );
