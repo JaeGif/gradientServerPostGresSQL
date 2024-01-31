@@ -14,7 +14,6 @@ export const auth_local = async (
       // Check for errors
       if (err) throw new Error(err); // Generate token
       const token = generateToken(user.id);
-      console.log('hitting endpoint', user.id);
       return res.status(201).json({
         data: {
           user: user.id,

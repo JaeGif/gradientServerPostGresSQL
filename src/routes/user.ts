@@ -4,7 +4,11 @@ import * as userController from '../controllers/user';
 import { local_strategy } from '../middleware/auth';
 
 router.get('/users', local_strategy().authenticate(), userController.users_get);
-router.get('/users/:id', userController.user_get);
+router.get(
+  '/users/:id',
+  local_strategy().authenticate(),
+  userController.user_get
+);
 router.post('/users/emailcheck', userController.user_emailcheck);
 
 router.put('/users/:id', userController.user_put);
