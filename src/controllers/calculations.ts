@@ -40,13 +40,16 @@ export const calculate1RepMax = (
     let avgForElementArr: number[] = [];
 
     for (let i = 0; i < sets.length; i++) {
+      let modifiedWeight = sets[i].weight;
+      if (sets[i].unit !== units) {
+        console.log('unit change');
+        if (units === 'kg') modifiedWeight = lbToKg(modifiedWeight);
+        else if (units === 'lb') modifiedWeight = kgToLb(modifiedWeight);
+      }
+      userWeight = Number(userWeight);
       if (sets[i].reps >= 5) {
-        let modifiedWeight = sets[i].weight;
-        if (sets[i].unit !== units) {
-          if (units === 'kg') modifiedWeight = lbToKg(modifiedWeight);
-          else if (units === 'lb') modifiedWeight = kgToLb(modifiedWeight);
-        }
         if (isPullups && userWeight) {
+          console.log(modifiedWeight + userWeight);
           const brzycki =
             (modifiedWeight + userWeight) * (36 / (37 - sets[i].reps)) -
             userWeight;
@@ -58,11 +61,13 @@ export const calculate1RepMax = (
       } else if (sets[i].reps < 5 && sets[i].reps !== 0) {
         if (isPullups && userWeight) {
           const epley =
-            (sets[i].weight + userWeight) * (1 + sets[i].reps / 30) -
+            (modifiedWeight + userWeight) * (1 + sets[i].reps / 30) -
             userWeight;
+          console.log('epley', epley);
+
           avgForElementArr.push(epley);
         } else {
-          const epley = sets[i].weight * (1 + sets[i].reps / 30);
+          const epley = modifiedWeight * (1 + sets[i].reps / 30);
           avgForElementArr.push(epley);
         }
       } else return 0;
