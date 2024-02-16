@@ -26,10 +26,10 @@ export const calculate1RepMax = (
   data: any[],
   units: 'kg' | 'lb',
   average: boolean,
-  isPullups: boolean = false,
+  isBodyWeight: boolean = false,
   userWeight?: number
 ) => {
-  if (isPullups && !userWeight) return [];
+  if (isBodyWeight && !userWeight) return [];
   // unit agnostic, units that go in, are units that go out
   // use average 1RM averaging the sets in each exercise
 
@@ -48,7 +48,7 @@ export const calculate1RepMax = (
       }
       userWeight = Number(userWeight);
       if (sets[i].reps >= 5) {
-        if (isPullups && userWeight) {
+        if (isBodyWeight && userWeight) {
           console.log(modifiedWeight + userWeight);
           const brzycki =
             (modifiedWeight + userWeight) * (36 / (37 - sets[i].reps)) -
@@ -59,7 +59,7 @@ export const calculate1RepMax = (
           avgForElementArr.push(brzycki);
         }
       } else if (sets[i].reps < 5 && sets[i].reps !== 0) {
-        if (isPullups && userWeight) {
+        if (isBodyWeight && userWeight) {
           const epley =
             (modifiedWeight + userWeight) * (1 + sets[i].reps / 30) -
             userWeight;
